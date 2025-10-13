@@ -1,0 +1,246 @@
+// sidebar.component.scss - Siguiendo estilo institucional UV
+
+.sidebar-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--White);
+  font-family: sans-serif, "Font Awesome 6 Free" !important; // Usando tu fuente
+  letter-spacing: normal !important;
+}
+
+/* Header siguiendo tu patrón */
+.sidebar-header {
+  padding: 24px 20px;
+  background: var(--Blue_Gray_700) 0% 0% no-repeat padding-box; // Siguiendo tu patrón
+  color: var(--White);
+  text-align: center;
+  opacity: 1;
+  border-radius: 4px 4px 0px 0px; // Usando tu patrón de bordes
+}
+
+.logo-container {
+  margin-bottom: 12px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--White);
+}
+
+.logo-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--White);
+}
+
+.header-text {
+  h2 {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 700; // Usando tu .roboto-bold
+    letter-spacing: 2px;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 11px; // Usando tu .g-font-size-12 aproximado
+    opacity: 0.9;
+    line-height: 1.2;
+    font-weight: 300; // Usando tu .roboto-regular
+  }
+}
+
+.header-divider {
+  border-color: var(--Blue_Gray_200);
+}
+
+/* Menú siguiendo tu patrón de listas */
+.menu-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.menu-accordion {
+  box-shadow: none;
+}
+
+.menu-panel {
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--Gray_300);
+  margin: 0 !important;
+  
+  &::before {
+    display: none;
+  }
+}
+
+.menu-header {
+  padding: 0 16px;
+  height: 56px;
+  cursor: pointer; // Usando tu .pointer
+  
+  &:hover {
+    background-color: var(--Blue_Gray_50);
+  }
+}
+
+.menu-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--Blue_Gray_700);
+  font-weight: 500; // Usando tu .robot-medium
+  font-size: 14px; // Usando tu tamaño estándar
+}
+
+.menu-icon {
+  color: var(--primary);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.menu-text {
+  flex: 1;
+}
+
+/* Submenú siguiendo tu patrón */
+.submenu-container {
+  padding: 8px 0;
+  background-color: var(--Blue_Gray_50); // Usando tu color de fondo específico
+  border-top: 1px solid var(--Gray_300);
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px 12px 56px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 14px; // Siguiendo tu patrón de fuentes
+  color: var(--Blue_Gray_700);
+  
+  &:hover {
+    background-color: var(--Blue_Gray_100);
+    color: var(--primary);
+    opacity: 0.75; // Siguiendo tu patrón de hover
+  }
+  
+  &.active {
+    background-color: var(--primary);
+    color: var(--White);
+    font-weight: 700; // Usando tu .roboto-bold
+    
+    .submenu-icon {
+      color: var(--White);
+    }
+  }
+}
+
+.submenu-icon {
+  color: var(--secondary);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  transition: color 0.2s ease;
+}
+
+.submenu-text {
+  flex: 1;
+}
+
+.submenu-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--White);
+  border-radius: 0 4px 4px 0; // Usando tu border-radius estándar
+}
+
+/* Footer siguiendo tu patrón */
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.footer-content {
+  padding: 16px 20px;
+  text-align: center;
+  background-color: var(--Blue_Gray_50);
+}
+
+.version-text {
+  margin: 0 0 4px 0;
+  font-size: 11px; // Siguiendo tu patrón de fuentes pequeñas
+  color: var(--Gray_600);
+  font-weight: 500;
+}
+
+.uv-text {
+  margin: 0;
+  font-size: 10px;
+  color: var(--Gray_600);
+}
+
+/* Scrollbar siguiendo tu patrón */
+.menu-container::-webkit-scrollbar {
+  width: 5px; // Usando tu ancho específico
+  background-color: var(--Gray_50);
+}
+
+.menu-container::-webkit-scrollbar-track {
+  background-color: var(--Gray_50);
+  border-radius: 10px; // Usando tu border-radius específico
+}
+
+.menu-container::-webkit-scrollbar-thumb {
+  background-color: var(--Gray_400);
+  border-radius: 10px;
+}
+
+.menu-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--Gray_600);
+}
+
+/* Personalizaciones Material siguiendo tu patrón */
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-expansion-panel-header-title {
+  margin: 0 !important;
+}
+
+::ng-deep .mat-expansion-indicator::after {
+  color: var(--primary);
+}
+
+// Siguiendo tu patrón de listas Material
+::ng-deep .mat-list-base {
+  padding: 0 !important;
+}
+
+// Focus siguiendo tu patrón
+button:focus, input:focus {
+  outline: 0 !important;
+}
+
+// Responsive siguiendo tus breakpoints
+@media (max-width: 767px) {
+  .header-text h2 {
+    font-size: 1.125rem; // Usando tu .g-font-size-18
+  }
+  
+  .submenu-item {
+    padding: 10px 20px 10px 48px;
+    font-size: 0.875rem; // Usando tu .g-font-size-14
+  }
+}

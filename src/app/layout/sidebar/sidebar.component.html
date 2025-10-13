@@ -1,0 +1,56 @@
+<div class="sidebar-container">
+  <!-- Header del sidebar -->
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <img src="assets/img/uv-logo.png" alt="UV Logo" class="logo" *ngIf="false">
+      <mat-icon class="logo-icon">school</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>SESA</h2>
+      <p>Sistema de Seguimiento de Superación Académica</p>
+    </div>
+  </div>
+  
+  <mat-divider class="header-divider"></mat-divider>
+
+  <!-- Menú de navegación -->
+  <div class="menu-container">
+    <mat-accordion class="menu-accordion" multi="true">
+      <mat-expansion-panel 
+        *ngFor="let item of menuItems; trackBy: trackByFn" 
+        class="menu-panel"
+        [expanded]="item.expanded">
+        
+        <mat-expansion-panel-header class="menu-header">
+          <mat-panel-title class="menu-title">
+            <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+            <span class="menu-text">{{ item.name }}</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <!-- Submenú -->
+        <div class="submenu-container" *ngIf="item.children">
+          <div 
+            *ngFor="let child of item.children; trackBy: trackByChildFn"
+            class="submenu-item"
+            [class.active]="selectedModule === child.route"
+            (click)="selectModule(child.route || '', child.name)">
+            
+            <mat-icon class="submenu-icon">{{ child.icon }}</mat-icon>
+            <span class="submenu-text">{{ child.name }}</span>
+            <div class="submenu-indicator" *ngIf="selectedModule === child.route"></div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <!-- Footer del sidebar -->
+  <div class="sidebar-footer">
+    <mat-divider></mat-divider>
+    <div class="footer-content">
+      <p class="version-text">v1.0.0</p>
+      <p class="uv-text">Universidad Veracruzana</p>
+    </div>
+  </div>
+</div>

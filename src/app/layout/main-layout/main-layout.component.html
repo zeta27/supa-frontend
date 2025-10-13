@@ -1,0 +1,34 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidebar -->
+  <mat-sidenav 
+    #drawer 
+    class="sidenav" 
+    fixedInViewport 
+    mode="side" 
+    opened="true">
+    <app-sidebar (moduleSelected)="onModuleSelected($event)"></app-sidebar>
+  </mat-sidenav>
+
+  <!-- Contenido principal -->
+  <mat-sidenav-content>
+    <mat-toolbar class="toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">Sistema SESA - Seguimiento de Superación Académica</span>
+      <div class="toolbar-spacer"></div>
+      <button mat-icon-button class="user-button">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+    
+    <div class="main-content">
+      <app-iframe-container [selectedModule]="selectedModule"></app-iframe-container>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

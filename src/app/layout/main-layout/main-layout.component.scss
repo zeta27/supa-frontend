@@ -1,0 +1,157 @@
+// main-layout.component.scss - Siguiendo estilo institucional UV
+
+/* ========== AGREGAR ESTO AL PRINCIPIO ========== */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Estilos para Material Icons - Solo aplican dentro de este componente */
+:host ::ng-deep {
+  .mat-icon {
+    font-family: 'Material Icons' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+// main-layout.component.scss - Siguiendo estilo institucional UV
+
+.sidenav-container {
+  height: 100vh;
+  background-color: var(--Gray_50);
+}
+
+.sidenav {
+  width: 300px;
+  background-color: var(--White);
+  border-right: 2px solid var(--Blue_Gray_200);
+  box-shadow: 2px 3px 3px 3px var(--Gray_400); // Usando tu patrón de sombras
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--primary) 0% 0% no-repeat padding-box; // Usando tu patrón de backgrounds
+  color: var(--White);
+  height: 64px;
+  padding: 0 16px;
+  opacity: 1; // Siguiendo tu patrón de opacidad explícita
+  box-shadow: 0px 4px 6px 2px var(--Gray_400); // Usando tus sombras específicas
+}
+
+.menu-button {
+  margin-right: 16px;
+  cursor: pointer; // Usando tu clase .pointer
+  
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  &:hover {
+    opacity: 0.75; // Siguiendo tu patrón de hover opacity
+  }
+}
+
+.toolbar-title {
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: normal !important; // Respetando tu regla de letter-spacing
+  font-family: sans-serif, "Font Awesome 6 Free" !important; // Usando tu fuente
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.user-button {
+  cursor: pointer;
+  
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+.main-content {
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  background-color: var(--Gray_50);
+  padding: 0;
+}
+
+// Responsive siguiendo tus breakpoints
+@media (max-width: 767px) { // Usando tu breakpoint específico
+  .sidenav {
+    width: 280px;
+  }
+  
+  .toolbar-title {
+    font-size: 16px;
+    display: none;
+    
+    &::after {
+      content: "SUPA";
+    }
+  }
+  
+  // Aplicando tu regla d-flex responsive
+  .d-flex {
+    display: grid !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidenav {
+    width: 100vw;
+  }
+}
+
+// Backdrop usando tu patrón de overlays
+::ng-deep .mat-drawer-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999; // Usando tu z-index alto
+}
+
+// Personalizaciones Material siguiendo tu patrón
+::ng-deep .mat-drawer-container, 
+::ng-deep .mat-drawer-inner-container {
+  background-color: var(--Gray_50) !important;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  height: calc(90vh - 7vh) !important; // Siguiendo tu cálculo específico
+}
+
+// Hover effects siguiendo tu estilo
+.menu-button:hover,
+.user-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px; // Usando tu border-radius estándar
+}
+
+// Botones siguiendo tu patrón de botones
+.toolbar button {
+  border: none;
+  background: transparent;
+  
+  &:focus {
+    outline: 0 !important; // Respetando tu regla de outline
+  }
+}

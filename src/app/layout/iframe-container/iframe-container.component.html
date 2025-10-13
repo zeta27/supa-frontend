@@ -1,0 +1,207 @@
+<!-- Contenedor cuando hay un módulo seleccionado -->
+<div class="iframe-container" *ngIf="selectedModule">
+  <!-- Header del módulo -->
+  <div class="iframe-header">
+    <div class="module-info">
+      <mat-icon class="module-icon">{{ getModuleIcon() }}</mat-icon>
+      <div class="module-details">
+        <h2 class="module-title">{{ getModuleTitle() }}</h2>
+        <p class="module-description">{{ getModuleDescription() }}</p>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <button 
+        mat-icon-button 
+        class="action-button" 
+        (click)="refreshIframe()" 
+        title="Actualizar"
+        matTooltip="Actualizar módulo">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        class="action-button" 
+        (click)="openInNewTab()" 
+        title="Abrir en nueva pestaña"
+        matTooltip="Abrir en nueva pestaña">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        class="action-button" 
+        (click)="toggleFullscreen()" 
+        title="Pantalla completa"
+        matTooltip="Pantalla completa">
+        <mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Contenido del iframe -->
+  <div class="iframe-content" [class.fullscreen]="isFullscreen">
+    <!-- Loading spinner -->
+    <div class="loading-container" *ngIf="isLoading">
+      <div class="loading-spinner">
+        <mat-spinner diameter="50" color="primary"></mat-spinner>
+      </div>
+      <div class="loading-info">
+        <h3 class="loading-title">Cargando módulo</h3>
+        <p class="loading-text">{{ getModuleTitle() }}</p>
+        <div class="loading-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="loadingProgress"></div>
+          </div>
+          <span class="progress-text">{{ loadingProgress }}%</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Iframe -->
+    <iframe 
+      #moduleIframe
+      [src]="getIframeSrc()" 
+      frameborder="0"
+      class="module-iframe"
+      [class.hidden]="isLoading"
+      (load)="onIframeLoad()"
+      (error)="onIframeError()"
+      allowfullscreen>
+    </iframe>
+    
+    <!-- Error state -->
+    <div class="error-container" *ngIf="hasError">
+      <div class="error-content">
+        <mat-icon class="error-icon">error_outline</mat-icon>
+        <h3 class="error-title">Error al cargar el módulo</h3>
+        <p class="error-message">
+          No se pudo cargar el contenido del módulo 
+          <strong>"{{ getModuleTitle() }}"</strong>
+        </p>
+        <div class="error-details" *ngIf="errorDetails">
+          <p class="error-detail-text">{{ errorDetails }}</p>
+        </div>
+        
+        <div class="error-actions">
+          <button mat-raised-button color="primary" (click)="retryLoad()">
+            <mat-icon>refresh</mat-icon>
+            Reintentar
+          </button>
+          <button mat-stroked-button color="warn" (click)="reportError()">
+            <mat-icon>bug_report</mat-icon>
+            Reportar Error
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connection status indicator -->
+    <div class="connection-status" [class.offline]="!isOnline" *ngIf="!isOnline">
+      <mat-icon>wifi_off</mat-icon>
+      <span>Sin conexión a internet</span>
+    </div>
+  </div>
+
+  <!-- Fullscreen overlay -->
+  <div class="fullscreen-overlay" *ngIf="isFullscreen" (click)="toggleFullscreen()">
+    <button mat-icon-button class="fullscreen-close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<!-- Pantalla de bienvenida -->
+<div class="welcome-screen" *ngIf="!selectedModule">
+  <mat-card class="welcome-card">
+    <mat-card-content class="welcome-content">
+      <!-- Icono de bienvenida -->
+      <div class="welcome-icon-container">
+        <div class="icon-background">
+          <mat-icon class="welcome-icon">school</mat-icon>
+        </div>
+        <div class="icon-particles">
+          <div class="particle" *ngFor="let particle of particles"></div>
+        </div>
+      </div>
+      
+      <!-- Contenido principal -->
+      <div class="welcome-main">
+        <h1 class="welcome-title">
+          Bienvenido al Sistema de
+          <span class="title-highlight">Seguimiento de Superación Académica</span>
+        </h1>
+        
+        <div class="welcome-description">
+          <p class="description-text">
+            Selecciona un módulo del menú lateral.
+          </p>
+        </div>
+      </div>
+
+      <!-- Lista de características -->
+      <div class="features-section">
+        <h3 class="features-title">Módulos disponibles</h3>
+        <div class="feature-grid">
+          <div class="feature-item" *ngFor="let feature of featuresData">
+            <div class="feature-icon">
+              <mat-icon>{{ feature.icon }}</mat-icon>
+            </div>
+            <div class="feature-info">
+              <h4 class="feature-name">{{ feature.name }}</h4>
+              <p class="feature-description">{{ feature.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Acciones rápidas -->
+      <div class="quick-actions">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="quick-action-btn primary-btn"
+          (click)="openHelp()">
+          <mat-icon>help_outline</mat-icon>
+          Manual de Usuario
+        </button>
+        
+        <button 
+          mat-stroked-button 
+          color="primary" 
+          class="quick-action-btn secondary-btn"
+          (click)="openSupport()">
+          <mat-icon>support_agent</mat-icon>
+          Soporte Técnico
+        </button>
+        
+        <button 
+          mat-stroked-button 
+          color="accent" 
+          class="quick-action-btn tertiary-btn"
+          (click)="openDocumentation()">
+          <mat-icon>description</mat-icon>
+          Documentación
+        </button>
+      </div>
+
+      <!-- Footer de la bienvenida -->
+      <div class="welcome-footer">
+        <div class="version-info">
+          <p class="version-text">Versión 1.0.0</p>
+          <p class="build-text">Build {{ getBuildInfo() }}</p>
+        </div>
+        <div class="university-info">
+          <p class="university-name">Universidad Veracruzana</p>
+          <p class="university-year">© {{ getCurrentYear() }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Background decoration -->
+  <div class="background-decoration">
+    <div class="decoration-element decoration-1"></div>
+    <div class="decoration-element decoration-2"></div>
+    <div class="decoration-element decoration-3"></div>
+  </div>
+</div>

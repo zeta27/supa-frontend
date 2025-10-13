@@ -1,0 +1,53 @@
+/* Version: Prod-23012023 */
+
+// Tema default para bootstrap
+$primary: #43A047;
+$secondary:#1565C0;
+$danger: #BF360C;
+$success: #43A047;
+$warning: #e1b23e;
+$info: #0D47A1;
+$custom-file-text: ();
+@import 'bootstrap/scss/bootstrap';
+
+//#endregion
+//Tema default para el proyecto general
+:root {
+  --Red_A800: #A01500;
+  --Purple_400:#AB47BC;
+  --Indigo_A800: #003366;
+  --Blue_800:#1565C0;
+  --Blue_900:#0D47A1;
+  --Light_Blue_500: #03A9F4;
+  --Cyan_150:#94C2ED;
+  --Cyan_1000:#275e76;
+  --Cyan_A000: #006867;
+  --Light_Green_450:#86BB71;
+  --Green_600:#43A047;
+  --Light_Green_700:#689F38;
+  --Amber_500:#FFC107;
+  --Deep_Orange_40: #F8D7DA;
+  --Deep_Orange_900:#BF360C;
+  --Brown_500:#795548;
+  --Gray_50:#FAFAFA;
+  --Gray_150: #DDD;
+  --Gray_300: #E0E0E0;
+  --Gray_400: #BDBDBD;
+  --Gray_600: #757575;
+  --Gray_700: #616161;
+  --Gray_850: #383838;
+  --Gray_A100: #01012010;
+  --Blue_Gray_40: #E4E8EA;
+  --Blue_Gray_50: #ECEFF1;
+  --Blue_Gray_100:#CFD8DC;
+  --Blue_Gray_200:#B0BEC5;
+  --Blue_Gray_700:#455A64;
+  --Black:#000000;
+  --White:#FFFFFF;
+  --primary: var(--Green_600);
+  --secondary: var(--Blue_800);
+  --danger: var(--Deep_Orange_900);
+  --success: var(--Green_600);
+  --warning: var(--Amber_500);
+  --info: var(--Blue_900);
+}
