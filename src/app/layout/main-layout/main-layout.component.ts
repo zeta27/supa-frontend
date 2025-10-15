@@ -24,9 +24,18 @@ import { IframeContainerComponent } from '../iframe-container/iframe-container.c
 })
 export class MainLayoutComponent {
   selectedModule: string = '';
+  currentSection: string = ''; // ← NUEVO
+  selectedTabIndex: number = 0; // ← NUEVO
 
   onModuleSelected(module: string) {
     this.selectedModule = module;
     console.log('Módulo seleccionado:', module);
+  }
+
+  // ← NUEVO MÉTODO
+  onSectionSelected(event: {section: string, index: number}) {
+    this.currentSection = event.section;
+    this.selectedTabIndex = event.index;
+    console.log('Sección seleccionada:', event.section, 'Tab:', event.index);
   }
 }

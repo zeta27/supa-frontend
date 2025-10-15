@@ -12,6 +12,7 @@ interface MenuItem {
   route?: string;
   children?: MenuItem[];
   expanded?: boolean;
+  section?: string; // ← NUEVO
 }
 
 @Component({
@@ -30,6 +31,7 @@ interface MenuItem {
 })
 export class SidebarComponent {
   @Output() moduleSelected = new EventEmitter<string>();
+  @Output() sectionSelected = new EventEmitter<{section: string, index: number}>(); // ← NUEVO
   
   selectedModule: string = '';
 
@@ -37,28 +39,30 @@ export class SidebarComponent {
     {
       name: 'Gestión Académica',
       icon: 'school',
-      expanded: true,
+      expanded: false,
+      section: 'academicos', // ← NUEVO
       children: [
         { name: 'Académicos', icon: 'person', route: 'academicos' },
-                { name: 'Apoyos Individuales', icon: 'account_balance_wallet', route: 'apoyos-eco' },
+        { name: 'Apoyos Individuales', icon: 'account_balance_wallet', route: 'apoyos-eco' },
         { name: 'Plazas', icon: 'location_city', route: 'plazas' }
-
       ]
     },
     {
       name: 'Cuerpos Académicos',
       icon: 'groups',
       expanded: false,
+      section: 'cuerpos', // ← NUEVO
       children: [
         { name: 'Cuerpos Académicos', icon: 'group_work', route: 'cuerpos-academicos' },
         { name: 'Miembros', icon: 'people', route: 'miembros-ca' },
-                { name: 'Apoyos CA', icon: 'group_add', route: 'apoyos-eco-ca' }
+        { name: 'Apoyos CA', icon: 'group_add', route: 'apoyos-eco-ca' }
       ]
     },
     {
       name: 'Servicios',
       icon: 'room_service',
       expanded: false,
+      section: 'servicios', // ← NUEVO
       children: [
         { name: 'Citas', icon: 'event', route: 'citas' },
         { name: 'Descargas Académicas', icon: 'download', route: 'descargas' }
@@ -68,39 +72,37 @@ export class SidebarComponent {
       name: 'Catálogos Básicos',
       icon: 'category',
       expanded: false,
+      section: 'catalogos', // ← NUEVO
       children: [
+        { name: 'Áreas', icon: 'domain', route: 'cat-areas' },
         { name: 'Géneros', icon: 'wc', route: 'cat-generos' },
         { name: 'Nacionalidades', icon: 'flag', route: 'cat-nacionalidades' },
         { name: 'Motivos', icon: 'help_outline', route: 'cat-motivos' },
         { name: 'Roles', icon: 'security', route: 'cat-roles' },
         { name: 'Nivel de Estudios', icon: 'school', route: 'cat-nivel-estudios' },
-        { name: 'Áreas', icon: 'domain', route: 'cat-areas' },
         { name: 'Regiones', icon: 'map', route: 'cat-regiones' },
         { name: 'Entidades', icon: 'business', route: 'cat-entidades' },
         { name: 'Períodos', icon: 'date_range', route: 'cat-periodos' },
-        { name: 'Disciplinas', icon: 'science', route: 'cat-disciplinas' },
-        { name: 'Tipos de Contratación', icon: 'work', route: 'cat-tipo-contrataciones' },
-        { name: 'Temporalidades', icon: 'schedule', route: 'cat-temp-contrataciones' },
-        { name: 'Grados CA', icon: 'military_tech', route: 'cat-grado-ca' },
-        { name: 'Catálogo Niveles', icon: 'format_list_numbered', route: 'cat-nivel-snii' },
-        { name: 'Estados de Apoyo', icon: 'assignment_turned_in', route: 'cat-estado-apoyo' },                
-        { name: 'Tipos de Apoyo', icon: 'category', route: 'cat-tipo-apoyo' }
+        { name: 'Disciplinas', icon: 'science', route: 'cat-disciplinas' }
       ]
-    },
-
+    }
   ];
 
   selectModule(route: string, name: string) {
     this.selectedModule = route;
     this.moduleSelected.emit(route);
-    console.log(`Módulo seleccionado: ${name} (${route})`);
   }
 
-  trackByFn(index: number, item: MenuItem): string {
+  // ← NUEVO MÉTODO
+  selectSection(section: string, childIndex: number) {
+    this.sectionSelected.emit({ section, index: childIndex });
+  }
+
+  trackByFn(index: number, item: MenuItem): any {
     return item.name;
   }
 
-  trackByChildFn(index: number, item: MenuItem): string {
+  trackByChildFn(index: number, item: MenuItem): any {
     return item.route || item.name;
   }
 }

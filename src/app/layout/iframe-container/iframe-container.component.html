@@ -1,117 +1,5 @@
-<!-- Contenedor cuando hay un módulo seleccionado -->
-<div class="iframe-container" *ngIf="selectedModule">
-  <!-- Header del módulo -->
-  <div class="iframe-header">
-    <div class="module-info">
-      <mat-icon class="module-icon">{{ getModuleIcon() }}</mat-icon>
-      <div class="module-details">
-        <h2 class="module-title">{{ getModuleTitle() }}</h2>
-        <p class="module-description">{{ getModuleDescription() }}</p>
-      </div>
-    </div>
-    
-    <div class="header-actions">
-      <button 
-        mat-icon-button 
-        class="action-button" 
-        (click)="refreshIframe()" 
-        title="Actualizar"
-        matTooltip="Actualizar módulo">
-        <mat-icon>refresh</mat-icon>
-      </button>
-      <button 
-        mat-icon-button 
-        class="action-button" 
-        (click)="openInNewTab()" 
-        title="Abrir en nueva pestaña"
-        matTooltip="Abrir en nueva pestaña">
-        <mat-icon>open_in_new</mat-icon>
-      </button>
-      <button 
-        mat-icon-button 
-        class="action-button" 
-        (click)="toggleFullscreen()" 
-        title="Pantalla completa"
-        matTooltip="Pantalla completa">
-        <mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
-      </button>
-    </div>
-  </div>
-  
-  <!-- Contenido del iframe -->
-  <div class="iframe-content" [class.fullscreen]="isFullscreen">
-    <!-- Loading spinner -->
-    <div class="loading-container" *ngIf="isLoading">
-      <div class="loading-spinner">
-        <mat-spinner diameter="50" color="primary"></mat-spinner>
-      </div>
-      <div class="loading-info">
-        <h3 class="loading-title">Cargando módulo</h3>
-        <p class="loading-text">{{ getModuleTitle() }}</p>
-        <div class="loading-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="loadingProgress"></div>
-          </div>
-          <span class="progress-text">{{ loadingProgress }}%</span>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Iframe -->
-    <iframe 
-      #moduleIframe
-      [src]="getIframeSrc()" 
-      frameborder="0"
-      class="module-iframe"
-      [class.hidden]="isLoading"
-      (load)="onIframeLoad()"
-      (error)="onIframeError()"
-      allowfullscreen>
-    </iframe>
-    
-    <!-- Error state -->
-    <div class="error-container" *ngIf="hasError">
-      <div class="error-content">
-        <mat-icon class="error-icon">error_outline</mat-icon>
-        <h3 class="error-title">Error al cargar el módulo</h3>
-        <p class="error-message">
-          No se pudo cargar el contenido del módulo 
-          <strong>"{{ getModuleTitle() }}"</strong>
-        </p>
-        <div class="error-details" *ngIf="errorDetails">
-          <p class="error-detail-text">{{ errorDetails }}</p>
-        </div>
-        
-        <div class="error-actions">
-          <button mat-raised-button color="primary" (click)="retryLoad()">
-            <mat-icon>refresh</mat-icon>
-            Reintentar
-          </button>
-          <button mat-stroked-button color="warn" (click)="reportError()">
-            <mat-icon>bug_report</mat-icon>
-            Reportar Error
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Connection status indicator -->
-    <div class="connection-status" [class.offline]="!isOnline" *ngIf="!isOnline">
-      <mat-icon>wifi_off</mat-icon>
-      <span>Sin conexión a internet</span>
-    </div>
-  </div>
-
-  <!-- Fullscreen overlay -->
-  <div class="fullscreen-overlay" *ngIf="isFullscreen" (click)="toggleFullscreen()">
-    <button mat-icon-button class="fullscreen-close">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-</div>
-
-<!-- Pantalla de bienvenida -->
-<div class="welcome-screen" *ngIf="!selectedModule">
+<!-- Pantalla de bienvenida cuando NO hay sección seleccionada -->
+<div class="welcome-screen" *ngIf="!currentSection">
   <mat-card class="welcome-card">
     <mat-card-content class="welcome-content">
       <!-- Icono de bienvenida -->
@@ -133,7 +21,7 @@
         
         <div class="welcome-description">
           <p class="description-text">
-            Selecciona un módulo del menú lateral.
+            Selecciona un módulo del menú lateral para comenzar.
           </p>
         </div>
       </div>
@@ -204,4 +92,38 @@
     <div class="decoration-element decoration-2"></div>
     <div class="decoration-element decoration-3"></div>
   </div>
+</div>
+
+<!-- Contenido con TABS cuando HAY sección seleccionada -->
+<div class="content-with-tabs" *ngIf="currentSection">
+  <mat-card class="content-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="title-icon">{{ getSectionIcon() }}</mat-icon>
+        {{ getSectionTitle() }}
+      </mat-card-title>
+      <mat-card-subtitle>{{ getSectionSubtitle() }}</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <mat-tab-group 
+        [(selectedIndex)]="selectedTabIndex" 
+        class="content-tabs"
+        animationDuration="300ms">
+        
+        <mat-tab 
+          *ngFor="let tab of getCurrentTabs(); let i = index"
+          [label]="tab.label">
+          
+          <div class="tab-content">
+            <iframe
+              [src]="tab.url"
+              frameborder="0"
+              class="content-iframe">
+            </iframe>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
 </div>

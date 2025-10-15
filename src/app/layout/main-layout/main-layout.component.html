@@ -6,7 +6,9 @@
     fixedInViewport 
     mode="side" 
     opened="true">
-    <app-sidebar (moduleSelected)="onModuleSelected($event)"></app-sidebar>
+    <app-sidebar 
+      (moduleSelected)="onModuleSelected($event)"
+      (sectionSelected)="onSectionSelected($event)"></app-sidebar>
   </mat-sidenav>
 
   <!-- Contenido principal -->
@@ -28,7 +30,10 @@
     </mat-toolbar>
     
     <div class="main-content">
-      <app-iframe-container [selectedModule]="selectedModule"></app-iframe-container>
+      <app-iframe-container 
+        [selectedModule]="selectedModule"
+        [currentSection]="currentSection"
+        [selectedTabIndex]="selectedTabIndex"></app-iframe-container>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,156 @@
+<!-- cat-areas.component.html - COPIA EXACTA DE SISPLAN -->
+<div class="iframe-content">
+
+  <!-- Barra de herramientas -->
+  <div class="d-flex justify-content-between align-items-center px-3 mb-3">
+    <!-- Formulario de nueva área -->
+    <div class="form-section d-flex align-items-end">
+      <mat-form-field appearance="fill" class="nombre-field me-2">
+        <mat-label>Nombre del área</mat-label>
+        <input 
+          matInput 
+          [(ngModel)]="nuevaArea.darea"
+          placeholder="Ingrese el nombre del área"
+          maxlength="100"
+          [disabled]="estaCargandoAlgo">
+      </mat-form-field>
+      
+      <button 
+        type="button"
+        mat-icon-button
+        color="primary" 
+        class="add-button"
+        (click)="crearArea()"
+        [disabled]="!formularioValido || estaCargandoAlgo"
+        matTooltip="Agregar nueva área">
+        <mat-spinner *ngIf="creating" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="!creating">add</mat-icon>
+      </button>
+    </div>
+    
+    <!-- Campo de búsqueda -->
+    <div class="search-container">
+      <mat-form-field appearance="fill" class="search-field">
+        <mat-label>Buscar áreas...</mat-label>
+        <input 
+          matInput 
+          placeholder="Buscar por nombre o ID..."
+          [(ngModel)]="searchTerm"
+          (input)="filtrarAreas()"
+          [disabled]="estaCargandoAlgo">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="SpinnerPosition">
+    <div class="InnerSpinner">
+      <mat-spinner></mat-spinner>
+      <b class="mt-3 g-font-size-14">Cargando áreas...</b>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!loading" class="px-3 pb-3">
+    <div class="iframe-table-container">
+      <div class="SpanBackground">
+        <div class="Content">
+          <div class="w-100">
+            <table mat-table [dataSource]="areasFiltered" class="iframe-table">
+              
+              <!-- Columna Nombre -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef>Nombre del Área</th>
+                <td mat-cell *matCellDef="let area">
+                  <div class="area-info">
+                    <span *ngIf="editando?.idCatAreas !== area.idCatAreas" class="area-name">
+                      {{ area.darea }}
+                    </span>
+                    <div *ngIf="editando?.idCatAreas === area.idCatAreas" class="inline-edit-container">
+                      <mat-form-field appearance="outline" class="inline-edit-field">
+                        <input 
+                          matInput 
+                          [(ngModel)]="areaEditando.darea"
+                          placeholder="Nombre del área"
+                          maxlength="100"
+                          [disabled]="updating">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Acciones -->
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let area">
+                  <div class="d-flex justify-content-center iframe-actions">
+                    <ng-container *ngIf="editando?.idCatAreas !== area.idCatAreas; else modoEdicion">
+                      <button 
+                        mat-icon-button 
+                        (click)="prepararEdicion(area)"
+                        [disabled]="!puedeEditar"
+                        matTooltip="Editar área">
+                        <mat-icon class="text-primary">edit</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button
+                        (click)="eliminarArea(area.idCatAreas)"
+                        [disabled]="estaCargandoAlgo"
+                        matTooltip="Eliminar área">
+                        <mat-icon class="text-danger">delete</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-template #modoEdicion>
+                      <button 
+                        mat-icon-button 
+                        (click)="actualizarArea()"
+                        [disabled]="updating || !areaEditando.darea?.trim()"
+                        matTooltip="Guardar cambios">
+                        <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
+                        <mat-icon *ngIf="!updating" class="text-success">save</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button
+                        (click)="cancelarEdicion()"
+                        [disabled]="updating"
+                        matTooltip="Cancelar edición">
+                        <mat-icon class="text-warning">cancel</mat-icon>
+                      </button>
+                    </ng-template>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <!-- Mensaje sin datos -->
+            <div *ngIf="areasFiltered.length === 0 && !loading" class="text-center p-4">
+              <mat-icon class="no-data-icon">{{ searchTerm ? 'search_off' : 'domain' }}</mat-icon>
+              <h4 class="g-font-size-16 roboto-medium text-muted mb-2">
+                {{ searchTerm ? 'Sin resultados' : 'No hay áreas registradas' }}
+              </h4>
+              <p class="text-muted g-font-size-14">
+                {{ searchTerm ? 'No se encontraron áreas' : 'Agregue la primera área' }}
+              </p>
+              <button 
+                *ngIf="searchTerm"
+                mat-stroked-button
+                color="primary"
+                (click)="limpiarBusqueda()"
+                [disabled]="estaCargandoAlgo">
+                <mat-icon>clear</mat-icon>
+                Limpiar búsqueda
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

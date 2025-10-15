@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon'; // Importación añadida
-import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { RouterOutlet } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { IconService } from './core/services/icon.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    MatIconModule, // Módulo añadido aquí
-    MainLayoutComponent
+    MatIconModule,
+    RouterOutlet
   ],
-  template: `<app-main-layout></app-main-layout>`,
+  template: `<router-outlet></router-outlet>`,
   styles: [`
     :host {
       display: block;

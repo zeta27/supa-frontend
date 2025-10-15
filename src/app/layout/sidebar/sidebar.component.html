@@ -2,7 +2,6 @@
   <!-- Header del sidebar -->
   <div class="sidebar-header">
     <div class="logo-container">
-      <img src="assets/img/uv-logo.png" alt="UV Logo" class="logo" *ngIf="false">
       <mat-icon class="logo-icon">school</mat-icon>
     </div>
     <div class="header-text">
@@ -31,10 +30,10 @@
         <!-- Submenú -->
         <div class="submenu-container" *ngIf="item.children">
           <div 
-            *ngFor="let child of item.children; trackBy: trackByChildFn"
+            *ngFor="let child of item.children; let childIndex = index; trackBy: trackByChildFn"
             class="submenu-item"
             [class.active]="selectedModule === child.route"
-            (click)="selectModule(child.route || '', child.name)">
+            (click)="selectSection(item.section!, childIndex)">
             
             <mat-icon class="submenu-icon">{{ child.icon }}</mat-icon>
             <span class="submenu-text">{{ child.name }}</span>
