@@ -72,9 +72,10 @@ export class SidebarComponent {
       name: 'Catálogos Básicos',
       icon: 'category',
       expanded: false,
-      section: 'catalogos', // ← NUEVO
+      section: 'catalogos', 
       children: [
         { name: 'Áreas', icon: 'domain', route: 'cat-areas' },
+        { name: 'Áreas de Dedicación', icon: 'science', route: 'cat-area-dedica' },
         { name: 'Géneros', icon: 'wc', route: 'cat-generos' },
         { name: 'Nacionalidades', icon: 'flag', route: 'cat-nacionalidades' },
         { name: 'Motivos', icon: 'help_outline', route: 'cat-motivos' },
@@ -83,7 +84,9 @@ export class SidebarComponent {
         { name: 'Regiones', icon: 'map', route: 'cat-regiones' },
         { name: 'Entidades', icon: 'business', route: 'cat-entidades' },
         { name: 'Períodos', icon: 'date_range', route: 'cat-periodos' },
-        { name: 'Disciplinas', icon: 'science', route: 'cat-disciplinas' }
+        { name: 'Disciplinas', icon: 'science', route: 'cat-disciplinas' },
+        { name: 'Estados de Apoyo', icon: 'info', route: 'cat-estadoapoyo' },
+        { name: 'Grados CA', icon: 'grade', route: 'cat-gradoca' }
       ]
     }
   ];

@@ -88,6 +88,7 @@ export class IframeContainerComponent implements OnInit, OnDestroy {
 
   catalogos: TabItem[] = [
     { label: 'Áreas', route: 'cat-areas', icon: 'domain' },
+    { label: 'Áreas de Dedicación', route: 'cat-area-dedica', icon: 'science' },
     { label: 'Géneros', route: 'cat-generos', icon: 'wc' },
     { label: 'Nacionalidades', route: 'cat-nacionalidades', icon: 'flag' },
     { label: 'Motivos', route: 'cat-motivos', icon: 'help_outline' },
@@ -96,7 +97,9 @@ export class IframeContainerComponent implements OnInit, OnDestroy {
     { label: 'Regiones', route: 'cat-regiones', icon: 'map' },
     { label: 'Entidades', route: 'cat-entidades', icon: 'business' },
     { label: 'Períodos', route: 'cat-periodos', icon: 'date_range' },
-    { label: 'Disciplinas', route: 'cat-disciplinas', icon: 'science' }
+    { label: 'Disciplinas', route: 'cat-disciplinas', icon: 'science' },
+    { label: 'Estados de Apoyo',route: 'cat-estadoapoyo', icon: 'info' },
+     { label: 'Grados CA', route: 'cat-gradoca' , icon: 'grade'}
   ];
 
   constructor(
@@ -177,15 +180,15 @@ export class IframeContainerComponent implements OnInit, OnDestroy {
 
   // Métodos para la pantalla de bienvenida
   openHelp(): void {
-    window.open('https://www.uv.mx/ayuda', '_blank');
+    window.open('https://www.uv.mx/', '_blank');
   }
 
   openSupport(): void {
-    window.open('https://www.uv.mx/soporte', '_blank');
+    window.open('https://www.uv.mx/', '_blank');
   }
 
   openDocumentation(): void {
-    window.open('https://www.uv.mx/documentacion', '_blank');
+    window.open('https://www.uv.mx/', '_blank');
   }
 
   getBuildInfo(): string {

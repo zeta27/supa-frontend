@@ -1,0 +1,188 @@
+<!-- cat-gradoca.component.html -->
+<div class="iframe-content">
+
+  <!-- Barra de herramientas -->
+  <div class="d-flex justify-content-between align-items-center px-3 mb-3">
+    <!-- Formulario de nuevo grado CA -->
+    <div class="form-section d-flex align-items-end">
+      <mat-form-field appearance="fill" class="descripcion-field me-2">
+        <mat-label>Descripción del grado</mat-label>
+        <input 
+          matInput 
+          [(ngModel)]="nuevoGradoCA.descripcionGrado"
+          placeholder="Ej: En Consolidación"
+          maxlength="255"
+          [disabled]="estaCargandoAlgo">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="abreviatura-field me-2">
+        <mat-label>Abreviatura</mat-label>
+        <input 
+          matInput 
+          [(ngModel)]="nuevoGradoCA.abreviatura"
+          placeholder="Ej: CAEC"
+          maxlength="100"
+          [disabled]="estaCargandoAlgo">
+      </mat-form-field>
+      
+      <button 
+        type="button"
+        mat-icon-button
+        color="primary" 
+        class="add-button"
+        (click)="crearGradoCA()"
+        [disabled]="!formularioValido || estaCargandoAlgo"
+        matTooltip="Agregar nuevo grado CA">
+        <mat-spinner *ngIf="creating" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="!creating">add</mat-icon>
+      </button>
+    </div>
+    
+    <!-- Campo de búsqueda -->
+    <div class="search-container">
+      <mat-form-field appearance="fill" class="search-field">
+        <mat-label>Buscar grados CA...</mat-label>
+        <input 
+          matInput 
+          placeholder="Buscar por descripción, abreviatura o ID..."
+          [(ngModel)]="searchTerm"
+          (input)="filtrarGradosCA()"
+          [disabled]="estaCargandoAlgo">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="SpinnerPosition">
+    <div class="InnerSpinner">
+      <mat-spinner></mat-spinner>
+      <b class="mt-3 g-font-size-14">Cargando grados CA...</b>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!loading" class="px-3 pb-3">
+    <div class="iframe-table-container">
+      <div class="SpanBackground">
+        <div class="Content">
+          <div class="w-100">
+            <table mat-table [dataSource]="gradosCAFiltered" class="iframe-table">
+              
+              <!-- Columna Descripción -->
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef>Descripción del Grado</th>
+                <td mat-cell *matCellDef="let gradoCA">
+                  <div class="grado-info">
+                    <span *ngIf="editando?.idCatGradoCA !== gradoCA.idCatGradoCA" class="grado-name">
+                      {{ gradoCA.descripcionGrado }}
+                    </span>
+                    <div *ngIf="editando?.idCatGradoCA === gradoCA.idCatGradoCA" class="inline-edit-container">
+                      <mat-form-field appearance="outline" class="inline-edit-field">
+                        <input 
+                          matInput 
+                          [(ngModel)]="gradoCAEditando.descripcionGrado"
+                          placeholder="Descripción del grado"
+                          maxlength="255"
+                          [disabled]="updating">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Abreviatura -->
+              <ng-container matColumnDef="abreviatura">
+                <th mat-header-cell *matHeaderCellDef>Abreviatura</th>
+                <td mat-cell *matCellDef="let gradoCA">
+                  <div class="abrev-info">
+                    <span *ngIf="editando?.idCatGradoCA !== gradoCA.idCatGradoCA" class="abrev-badge">
+                      {{ gradoCA.abreviatura }}
+                    </span>
+                    <div *ngIf="editando?.idCatGradoCA === gradoCA.idCatGradoCA" class="inline-edit-container-small">
+                      <mat-form-field appearance="outline" class="inline-edit-field-small">
+                        <input 
+                          matInput 
+                          [(ngModel)]="gradoCAEditando.abreviatura"
+                          placeholder="Abreviatura"
+                          maxlength="100"
+                          [disabled]="updating">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Acciones -->
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let gradoCA">
+                  <div class="d-flex justify-content-center iframe-actions">
+                    <ng-container *ngIf="editando?.idCatGradoCA !== gradoCA.idCatGradoCA; else modoEdicion">
+                      <button 
+                        mat-icon-button 
+                        (click)="prepararEdicion(gradoCA)"
+                        [disabled]="!puedeEditar"
+                        matTooltip="Editar grado CA">
+                        <mat-icon class="text-primary">edit</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button
+                        (click)="eliminarGradoCA(gradoCA.idCatGradoCA)"
+                        [disabled]="estaCargandoAlgo"
+                        matTooltip="Eliminar grado CA">
+                        <mat-icon class="text-danger">delete</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-template #modoEdicion>
+                      <button 
+                        mat-icon-button 
+                        (click)="actualizarGradoCA()"
+                        [disabled]="updating || !gradoCAEditando.descripcionGrado?.trim() || !gradoCAEditando.abreviatura?.trim()"
+                        matTooltip="Guardar cambios">
+                        <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
+                        <mat-icon *ngIf="!updating" class="text-success">save</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button
+                        (click)="cancelarEdicion()"
+                        [disabled]="updating"
+                        matTooltip="Cancelar edición">
+                        <mat-icon class="text-warning">cancel</mat-icon>
+                      </button>
+                    </ng-template>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <!-- Mensaje sin datos -->
+            <div *ngIf="gradosCAFiltered.length === 0 && !loading" class="text-center p-4">
+              <mat-icon class="no-data-icon">{{ searchTerm ? 'search_off' : 'grade' }}</mat-icon>
+              <h4 class="g-font-size-16 roboto-medium text-muted mb-2">
+                {{ searchTerm ? 'Sin resultados' : 'No hay grados CA registrados' }}
+              </h4>
+              <p class="text-muted g-font-size-14">
+                {{ searchTerm ? 'No se encontraron grados CA' : 'Agregue el primer grado CA' }}
+              </p>
+              <button 
+                *ngIf="searchTerm"
+                mat-stroked-button
+                color="primary"
+                (click)="limpiarBusqueda()"
+                [disabled]="estaCargandoAlgo">
+                <mat-icon>clear</mat-icon>
+                Limpiar búsqueda
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
