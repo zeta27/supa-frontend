@@ -1,4 +1,4 @@
-// cat-area-dedica.component.ts
+// cat-area-dedica.component.ts - COPIA EXACTA DE CAT-AREAS
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -44,7 +44,7 @@ interface SUPACatAreaDedica {
 })
 export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatAreaDedica';
+  private backendUrl = 'http://148.226.168.138/supa/Api/SUPACatAreaDedica';
 
   // Data properties
   areasDedica: SUPACatAreaDedica[] = [];
@@ -78,22 +78,22 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   
   crearAreaDedica(): void {
     if (!this.nuevaAreaDedica.dAreaDedica?.trim()) {
-      this.mostrarMensaje('La descripción del área dedicada es requerida', 'snackBar-dialog-Warning');
+      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const descripcion = this.nuevaAreaDedica.dAreaDedica.trim();
+    const nombreAreaDedica = this.nuevaAreaDedica.dAreaDedica.trim();
 
     const nombreExiste = this.areasDedica.some(area => 
-      area.dAreaDedica.toLowerCase() === descripcion.toLowerCase()
+      area.dAreaDedica.toLowerCase() === nombreAreaDedica.toLowerCase()
     );
 
     if (nombreExiste) {
-      this.mostrarMensaje('Ya existe un área dedicada con esta descripción', 'snackBar-dialog-Warning');
+      this.mostrarMensaje('Ya existe un área de dedicación con este nombre', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = { dAreaDedica: descripcion };
+    const areaDedicaData = { DAreaDedica: nombreAreaDedica };  // ✅ D mayúscula para el backend
 
     this.creating = true;
 
@@ -104,10 +104,10 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
           this.creating = false;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al crear área dedicada:', error);
+          console.error('Error al crear área de dedicación:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área dedicada creada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
             this.nuevaAreaDedica = {};
             
             timer(1000).subscribe(() => {
@@ -116,10 +116,10 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al crear el área dedicada';
+            let mensaje = 'Error al crear el área de dedicación';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área dedicada con esta descripción';
+              mensaje = 'Ya existe un área de dedicación con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -136,7 +136,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área dedicada creada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
             this.nuevaAreaDedica = {};
             this.cargarAreasDedica();
           }
@@ -163,25 +163,24 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
 
   actualizarAreaDedica(): void {
     if (!this.editando || !this.areaDedicaEditando.dAreaDedica?.trim()) {
-      this.mostrarMensaje('La descripción del área dedicada es requerida', 'snackBar-dialog-Warning');
+      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const nuevaDescripcion = this.areaDedicaEditando.dAreaDedica.trim();
+    const nuevoNombre = this.areaDedicaEditando.dAreaDedica.trim();
 
     const nombreExiste = this.areasDedica.some(area => 
-      area.dAreaDedica.toLowerCase() === nuevaDescripcion.toLowerCase() &&
+      area.dAreaDedica.toLowerCase() === nuevoNombre.toLowerCase() &&
       area.idCatAreaDedica !== this.editando!.idCatAreaDedica
     );
 
     if (nombreExiste) {
-      this.mostrarMensaje('Ya existe un área dedicada con esta descripción', 'snackBar-dialog-Warning');
+      this.mostrarMensaje('Ya existe un área de dedicación con este nombre', 'snackBar-dialog-Warning');
       return;
     }
 
     const areaDedicaData = {
-      idCatAreaDedica: this.editando.idCatAreaDedica,
-      dAreaDedica: nuevaDescripcion
+      DAreaDedica: nuevoNombre  // ✅ D mayúscula para el backend
     };
 
     this.updating = true;
@@ -191,10 +190,10 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.updating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al actualizar área dedicada:', error);
+          console.error('Error al actualizar área de dedicación:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área dedicada actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
               this.cargarAreasDedica();
@@ -203,10 +202,10 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al actualizar el área dedicada';
+            let mensaje = 'Error al actualizar el área de dedicación';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área dedicada con esta descripción';
+              mensaje = 'Ya existe un área de dedicación con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -223,7 +222,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área dedicada actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
             this.cancelarEdicion();
             this.cargarAreasDedica();
           }
@@ -244,8 +243,8 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.loading = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al cargar áreas dedicadas:', error);
-          let mensaje = 'Error al cargar las áreas dedicadas';
+          console.error('Error al cargar áreas de dedicación:', error);
+          let mensaje = 'Error al cargar las áreas de dedicación';
           
           if (error.status === 0) {
             mensaje = 'Error de conexión con el servidor';
@@ -267,7 +266,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     const areaDedica = this.areasDedica.find(a => a.idCatAreaDedica === id);
     if (!areaDedica) return;
 
-    const confirmacion = confirm(`¿Está seguro de que desea eliminar el área dedicada "${areaDedica.dAreaDedica}"?\n\nEsta acción no se puede deshacer.`);
+    const confirmacion = confirm(`¿Está seguro de que desea eliminar el área de dedicación "${areaDedica.dAreaDedica}"?\n\nEsta acción no se puede deshacer.`);
     if (!confirmacion) return;
 
     this.deleting = true;
@@ -277,10 +276,10 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.deleting = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al eliminar área dedicada:', error);
+          console.error('Error al eliminar área de dedicación:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área dedicada eliminada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Área de dedicación eliminada exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
               this.cargarAreasDedica();
@@ -288,10 +287,10 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al eliminar el área dedicada';
+            let mensaje = 'Error al eliminar el área de dedicación';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'No se puede eliminar el área dedicada porque está siendo utilizada por otros registros';
+              mensaje = 'No se puede eliminar el área de dedicación porque está siendo utilizada por otros registros';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -308,7 +307,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje(`Área dedicada "${areaDedica.dAreaDedica}" eliminada exitosamente`, 'snackBar-dialog');
+            this.mostrarMensaje(`Área de dedicación "${areaDedica.dAreaDedica}" eliminada exitosamente`, 'snackBar-dialog');
             
             if (this.editando?.idCatAreaDedica === id) {
               this.cancelarEdicion();
@@ -325,9 +324,9 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
       this.areasDedicaFiltered = [...this.areasDedica];
     } else {
       const termino = this.searchTerm.toLowerCase().trim();
-      this.areasDedicaFiltered = this.areasDedica.filter(areaDedica =>
-        areaDedica.dAreaDedica.toLowerCase().includes(termino) ||
-        areaDedica.idCatAreaDedica.toString().includes(termino)
+      this.areasDedicaFiltered = this.areasDedica.filter(area =>
+        area.dAreaDedica.toLowerCase().includes(termino) ||
+        area.idCatAreaDedica.toString().includes(termino)
       );
     }
   }
