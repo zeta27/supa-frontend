@@ -1,4 +1,4 @@
-// cat-area-dedica.component.ts
+// cat-motivos.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,13 +17,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Subject, takeUntil, finalize, catchError, of, timer } from 'rxjs';
 
-interface SUPACatAreaDedica {
-  idCatAreaDedica: number;
-  dAreaDedica: string;
+interface SUPACatMotivos {
+  idCatMotivos: number;
+  dMotivos: string;
 }
 
 @Component({
-  selector: 'app-cat-area-dedica',
+  selector: 'app-cat-motivos',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,19 +39,19 @@ interface SUPACatAreaDedica {
     MatTooltipModule,
     MatSnackBarModule
   ],
-  templateUrl: './cat-area-dedica.component.html',
-  styleUrls: ['./cat-area-dedica.component.scss']
+  templateUrl: './cat-motivos.component.html',
+  styleUrls: ['./cat-motivos.component.scss']
 })
-export class CatAreaDedicaComponent implements OnInit, OnDestroy {
+export class CatMotivosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatAreaDedica';
+  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatMotivos';
 
   // Data properties
-  areasDedica: SUPACatAreaDedica[] = [];
-  areasDedicaFiltered: SUPACatAreaDedica[] = [];
-  nuevaAreaDedica: Partial<SUPACatAreaDedica> = {};
-  editando: SUPACatAreaDedica | null = null;
-  areaDedicaEditando: Partial<SUPACatAreaDedica> = {};
+  motivos: SUPACatMotivos[] = [];
+  motivosFiltered: SUPACatMotivos[] = [];
+  nuevoMotivo: Partial<SUPACatMotivos> = {};
+  editando: SUPACatMotivos | null = null;
+  motivoEditando: Partial<SUPACatMotivos> = {};
 
   // UI properties
   loading = false;
@@ -68,7 +68,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.cargarAreasDedica();
+    this.cargarMotivos();
   }
 
   ngOnDestroy(): void {
@@ -76,38 +76,38 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  crearAreaDedica(): void {
-    if (!this.nuevaAreaDedica.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  crearMotivo(): void {
+    if (!this.nuevoMotivo.dMotivos?.trim()) {
+      this.mostrarMensaje('El nombre del motivo es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.nuevaAreaDedica.dAreaDedica.trim()
+    const motivoData = {
+      dMotivos: this.nuevoMotivo.dMotivos.trim()
     };
 
     this.creating = true;
 
-    this.http.post<SUPACatAreaDedica>(this.backendUrl, areaDedicaData)
+    this.http.post<SUPACatMotivos>(this.backendUrl, motivoData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.creating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al crear área de dedicación:', error);
+          console.error('Error al crear motivo:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Motivo creado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarMotivos();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al crear el área de dedicación';
+            let mensaje = 'Error al crear el motivo';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe un motivo con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -124,22 +124,22 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
-            this.nuevaAreaDedica = {};
-            this.cargarAreasDedica();
+            this.mostrarMensaje('Motivo creado exitosamente', 'snackBar-dialog');
+            this.nuevoMotivo = {};
+            this.cargarMotivos();
           }
         }
       });
   }
 
-  prepararEdicion(areaDedica: SUPACatAreaDedica): void {
+  prepararEdicion(motivo: SUPACatMotivos): void {
     if (this.editando) {
       this.cancelarEdicion();
     }
     
-    this.editando = { ...areaDedica };
-    this.areaDedicaEditando = { 
-      dAreaDedica: areaDedica.dAreaDedica
+    this.editando = { ...motivo };
+    this.motivoEditando = { 
+      dMotivos: motivo.dMotivos
     };
     
     setTimeout(() => {
@@ -151,39 +151,39 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  actualizarAreaDedica(): void {
-    if (!this.editando || !this.areaDedicaEditando.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  actualizarMotivo(): void {
+    if (!this.editando || !this.motivoEditando.dMotivos?.trim()) {
+      this.mostrarMensaje('El nombre del motivo es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.areaDedicaEditando.dAreaDedica.trim()
+    const motivoData = {
+      dMotivos: this.motivoEditando.dMotivos.trim()
     };
 
     this.updating = true;
 
-    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatAreaDedica}`, areaDedicaData)
+    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatMotivos}`, motivoData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.updating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al actualizar área de dedicación:', error);
+          console.error('Error al actualizar motivo:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Motivo actualizado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarMotivos();
               this.cancelarEdicion();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al actualizar el área de dedicación';
+            let mensaje = 'Error al actualizar el motivo';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe un motivo con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -200,9 +200,9 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Motivo actualizado exitosamente', 'snackBar-dialog');
             this.cancelarEdicion();
-            this.cargarAreasDedica();
+            this.cargarMotivos();
           }
         }
       });
@@ -210,19 +210,19 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
 
   cancelarEdicion(): void {
     this.editando = null;
-    this.areaDedicaEditando = {};
+    this.motivoEditando = {};
   }
 
-  cargarAreasDedica(): void {
+  cargarMotivos(): void {
     this.loading = true;
     
-    this.http.get<SUPACatAreaDedica[]>(this.backendUrl)
+    this.http.get<SUPACatMotivos[]>(this.backendUrl)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.loading = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al cargar áreas de dedicación:', error);
-          let mensaje = 'Error al cargar las áreas de dedicación';
+          console.error('Error al cargar motivos:', error);
+          let mensaje = 'Error al cargar los motivos';
           
           if (error.status === 0) {
             mensaje = 'Error de conexión con el servidor';
@@ -234,17 +234,17 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (data) => {
-          this.areasDedica = data;
-          this.filtrarAreasDedica();
+          this.motivos = data;
+          this.filtrarMotivos();
         }
       });
   }
 
-  eliminarAreaDedica(id: number): void {
-    const areaDedica = this.areasDedica.find(a => a.idCatAreaDedica === id);
-    if (!areaDedica) return;
+  eliminarMotivo(id: number): void {
+    const motivo = this.motivos.find(m => m.idCatMotivos === id);
+    if (!motivo) return;
 
-    const confirmacion = confirm(`¿Está seguro de que desea eliminar el área de dedicación "${areaDedica.dAreaDedica}"?\n\nEsta acción no se puede deshacer.`);
+    const confirmacion = confirm(`¿Está seguro de que desea eliminar el motivo "${motivo.dMotivos}"?\n\nEsta acción no se puede deshacer.`);
     if (!confirmacion) return;
 
     this.deleting = true;
@@ -254,21 +254,21 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.deleting = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al eliminar área de dedicación:', error);
+          console.error('Error al eliminar motivo:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación eliminada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Motivo eliminado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarMotivos();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al eliminar el área de dedicación';
+            let mensaje = 'Error al eliminar el motivo';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'No se puede eliminar el área de dedicación porque está siendo utilizada por otros registros';
+              mensaje = 'No se puede eliminar el motivo porque está siendo utilizado por otros registros';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -285,33 +285,33 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje(`Área de dedicación "${areaDedica.dAreaDedica}" eliminada exitosamente`, 'snackBar-dialog');
+            this.mostrarMensaje(`Motivo "${motivo.dMotivos}" eliminado exitosamente`, 'snackBar-dialog');
             
-            if (this.editando?.idCatAreaDedica === id) {
+            if (this.editando?.idCatMotivos === id) {
               this.cancelarEdicion();
             }
             
-            this.cargarAreasDedica();
+            this.cargarMotivos();
           }
         }
       });
   }
 
-  filtrarAreasDedica(): void {
+  filtrarMotivos(): void {
     if (!this.searchTerm.trim()) {
-      this.areasDedicaFiltered = [...this.areasDedica];
+      this.motivosFiltered = [...this.motivos];
     } else {
       const termino = this.searchTerm.toLowerCase().trim();
-      this.areasDedicaFiltered = this.areasDedica.filter(area =>
-        area.dAreaDedica.toLowerCase().includes(termino) ||
-        area.idCatAreaDedica.toString().includes(termino)
+      this.motivosFiltered = this.motivos.filter(motivo =>
+        motivo.dMotivos.toLowerCase().includes(termino) ||
+        motivo.idCatMotivos.toString().includes(termino)
       );
     }
   }
 
   limpiarBusqueda(): void {
     this.searchTerm = '';
-    this.filtrarAreasDedica();
+    this.filtrarMotivos();
   }
 
   private mostrarMensaje(mensaje: string, panelClass: string): void {
@@ -323,14 +323,14 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     });
   }
 
-  trackByAreaDedicaId(index: number, areaDedica: SUPACatAreaDedica): number {
-    return areaDedica.idCatAreaDedica;
+  trackByMotivoId(index: number, motivo: SUPACatMotivos): number {
+    return motivo.idCatMotivos;
   }
 
   get formularioValido(): boolean {
-    return !!(this.nuevaAreaDedica.dAreaDedica?.trim() && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length >= 1 && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length <= 50);
+    return !!(this.nuevoMotivo.dMotivos?.trim() && 
+              this.nuevoMotivo.dMotivos.trim().length >= 1 && 
+              this.nuevoMotivo.dMotivos.trim().length <= 100);
   }
 
   get puedeEditar(): boolean {

@@ -1,4 +1,4 @@
-// cat-area-dedica.component.ts
+// cat-periodos.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,16 +14,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { Subject, takeUntil, finalize, catchError, of, timer } from 'rxjs';
 
-interface SUPACatAreaDedica {
-  idCatAreaDedica: number;
-  dAreaDedica: string;
+interface SUPACatPeriodos {
+  idCatPeriodos: number;
+  descripcionPeriodo: string;
+  fechaInicio: string | null;
+  fechaTermino: string | null;
 }
 
 @Component({
-  selector: 'app-cat-area-dedica',
+  selector: 'app-cat-periodos',
   standalone: true,
   imports: [
     CommonModule,
@@ -37,21 +41,23 @@ interface SUPACatAreaDedica {
     MatInputModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
-  templateUrl: './cat-area-dedica.component.html',
-  styleUrls: ['./cat-area-dedica.component.scss']
+  templateUrl: './cat-periodos.component.html',
+  styleUrls: ['./cat-periodos.component.scss']
 })
-export class CatAreaDedicaComponent implements OnInit, OnDestroy {
+export class CatPeriodosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatAreaDedica';
+  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatPeriodos';
 
   // Data properties
-  areasDedica: SUPACatAreaDedica[] = [];
-  areasDedicaFiltered: SUPACatAreaDedica[] = [];
-  nuevaAreaDedica: Partial<SUPACatAreaDedica> = {};
-  editando: SUPACatAreaDedica | null = null;
-  areaDedicaEditando: Partial<SUPACatAreaDedica> = {};
+  periodos: SUPACatPeriodos[] = [];
+  periodosFiltered: SUPACatPeriodos[] = [];
+  nuevoPeriodo: Partial<SUPACatPeriodos> = {};
+  editando: SUPACatPeriodos | null = null;
+  periodoEditando: Partial<SUPACatPeriodos> = {};
 
   // UI properties
   loading = false;
@@ -60,7 +66,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   deleting = false;
   searchTerm = '';
   
-  displayedColumns: string[] = ['nombre', 'acciones'];
+  displayedColumns: string[] = ['descripcion', 'fechaInicio', 'fechaTermino', 'acciones'];
 
   constructor(
     private http: HttpClient,
@@ -68,7 +74,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.cargarAreasDedica();
+    this.cargarPeriodos();
   }
 
   ngOnDestroy(): void {
@@ -76,38 +82,40 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  crearAreaDedica(): void {
-    if (!this.nuevaAreaDedica.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  crearPeriodo(): void {
+    if (!this.nuevoPeriodo.descripcionPeriodo?.trim()) {
+      this.mostrarMensaje('La descripción del periodo es requerida', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.nuevaAreaDedica.dAreaDedica.trim()
+    const periodoData = {
+      descripcionPeriodo: this.nuevoPeriodo.descripcionPeriodo.trim(),
+      fechaInicio: this.nuevoPeriodo.fechaInicio || null,
+      fechaTermino: this.nuevoPeriodo.fechaTermino || null
     };
 
     this.creating = true;
 
-    this.http.post<SUPACatAreaDedica>(this.backendUrl, areaDedicaData)
+    this.http.post<SUPACatPeriodos>(this.backendUrl, periodoData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.creating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al crear área de dedicación:', error);
+          console.error('Error al crear periodo:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Periodo creado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarPeriodos();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al crear el área de dedicación';
+            let mensaje = 'Error al crear el periodo';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe un periodo con esta descripción';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -124,66 +132,62 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
-            this.nuevaAreaDedica = {};
-            this.cargarAreasDedica();
+            this.mostrarMensaje('Periodo creado exitosamente', 'snackBar-dialog');
+            this.nuevoPeriodo = {};
+            this.cargarPeriodos();
           }
         }
       });
   }
 
-  prepararEdicion(areaDedica: SUPACatAreaDedica): void {
+  prepararEdicion(periodo: SUPACatPeriodos): void {
     if (this.editando) {
       this.cancelarEdicion();
     }
     
-    this.editando = { ...areaDedica };
-    this.areaDedicaEditando = { 
-      dAreaDedica: areaDedica.dAreaDedica
+    this.editando = { ...periodo };
+    this.periodoEditando = { 
+      descripcionPeriodo: periodo.descripcionPeriodo,
+      fechaInicio: periodo.fechaInicio,
+      fechaTermino: periodo.fechaTermino
     };
-    
-    setTimeout(() => {
-      const input = document.querySelector('.inline-edit-field input') as HTMLInputElement;
-      if (input) {
-        input.focus();
-        input.select();
-      }
-    }, 100);
   }
 
-  actualizarAreaDedica(): void {
-    if (!this.editando || !this.areaDedicaEditando.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  actualizarPeriodo(): void {
+    if (!this.editando || !this.periodoEditando.descripcionPeriodo?.trim()) {
+      this.mostrarMensaje('La descripción del periodo es requerida', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.areaDedicaEditando.dAreaDedica.trim()
+    const periodoData = {
+      descripcionPeriodo: this.periodoEditando.descripcionPeriodo.trim(),
+      fechaInicio: this.periodoEditando.fechaInicio || null,
+      fechaTermino: this.periodoEditando.fechaTermino || null
     };
 
     this.updating = true;
 
-    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatAreaDedica}`, areaDedicaData)
+    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatPeriodos}`, periodoData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.updating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al actualizar área de dedicación:', error);
+          console.error('Error al actualizar periodo:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Periodo actualizado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarPeriodos();
               this.cancelarEdicion();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al actualizar el área de dedicación';
+            let mensaje = 'Error al actualizar el periodo';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe un periodo con esta descripción';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -200,9 +204,9 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Periodo actualizado exitosamente', 'snackBar-dialog');
             this.cancelarEdicion();
-            this.cargarAreasDedica();
+            this.cargarPeriodos();
           }
         }
       });
@@ -210,19 +214,19 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
 
   cancelarEdicion(): void {
     this.editando = null;
-    this.areaDedicaEditando = {};
+    this.periodoEditando = {};
   }
 
-  cargarAreasDedica(): void {
+  cargarPeriodos(): void {
     this.loading = true;
     
-    this.http.get<SUPACatAreaDedica[]>(this.backendUrl)
+    this.http.get<SUPACatPeriodos[]>(this.backendUrl)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.loading = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al cargar áreas de dedicación:', error);
-          let mensaje = 'Error al cargar las áreas de dedicación';
+          console.error('Error al cargar periodos:', error);
+          let mensaje = 'Error al cargar los periodos';
           
           if (error.status === 0) {
             mensaje = 'Error de conexión con el servidor';
@@ -234,17 +238,17 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (data) => {
-          this.areasDedica = data;
-          this.filtrarAreasDedica();
+          this.periodos = data;
+          this.filtrarPeriodos();
         }
       });
   }
 
-  eliminarAreaDedica(id: number): void {
-    const areaDedica = this.areasDedica.find(a => a.idCatAreaDedica === id);
-    if (!areaDedica) return;
+  eliminarPeriodo(id: number): void {
+    const periodo = this.periodos.find(p => p.idCatPeriodos === id);
+    if (!periodo) return;
 
-    const confirmacion = confirm(`¿Está seguro de que desea eliminar el área de dedicación "${areaDedica.dAreaDedica}"?\n\nEsta acción no se puede deshacer.`);
+    const confirmacion = confirm(`¿Está seguro de que desea eliminar el periodo "${periodo.descripcionPeriodo}"?\n\nEsta acción no se puede deshacer.`);
     if (!confirmacion) return;
 
     this.deleting = true;
@@ -254,21 +258,21 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.deleting = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al eliminar área de dedicación:', error);
+          console.error('Error al eliminar periodo:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación eliminada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Periodo eliminado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarPeriodos();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al eliminar el área de dedicación';
+            let mensaje = 'Error al eliminar el periodo';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'No se puede eliminar el área de dedicación porque está siendo utilizada por otros registros';
+              mensaje = 'No se puede eliminar el periodo porque está siendo utilizado por otros registros';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -285,33 +289,41 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje(`Área de dedicación "${areaDedica.dAreaDedica}" eliminada exitosamente`, 'snackBar-dialog');
+            this.mostrarMensaje(`Periodo "${periodo.descripcionPeriodo}" eliminado exitosamente`, 'snackBar-dialog');
             
-            if (this.editando?.idCatAreaDedica === id) {
+            if (this.editando?.idCatPeriodos === id) {
               this.cancelarEdicion();
             }
             
-            this.cargarAreasDedica();
+            this.cargarPeriodos();
           }
         }
       });
   }
 
-  filtrarAreasDedica(): void {
+  filtrarPeriodos(): void {
     if (!this.searchTerm.trim()) {
-      this.areasDedicaFiltered = [...this.areasDedica];
+      this.periodosFiltered = [...this.periodos];
     } else {
       const termino = this.searchTerm.toLowerCase().trim();
-      this.areasDedicaFiltered = this.areasDedica.filter(area =>
-        area.dAreaDedica.toLowerCase().includes(termino) ||
-        area.idCatAreaDedica.toString().includes(termino)
+      this.periodosFiltered = this.periodos.filter(periodo =>
+        periodo.descripcionPeriodo?.toLowerCase().includes(termino) ||
+        periodo.idCatPeriodos.toString().includes(termino) ||
+        periodo.fechaInicio?.includes(termino) ||
+        periodo.fechaTermino?.includes(termino)
       );
     }
   }
 
   limpiarBusqueda(): void {
     this.searchTerm = '';
-    this.filtrarAreasDedica();
+    this.filtrarPeriodos();
+  }
+
+  formatearFecha(fecha: string | null): string {
+    if (!fecha) return 'N/A';
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' });
   }
 
   private mostrarMensaje(mensaje: string, panelClass: string): void {
@@ -323,14 +335,14 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     });
   }
 
-  trackByAreaDedicaId(index: number, areaDedica: SUPACatAreaDedica): number {
-    return areaDedica.idCatAreaDedica;
+  trackByPeriodoId(index: number, periodo: SUPACatPeriodos): number {
+    return periodo.idCatPeriodos;
   }
 
   get formularioValido(): boolean {
-    return !!(this.nuevaAreaDedica.dAreaDedica?.trim() && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length >= 1 && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length <= 50);
+    return !!(this.nuevoPeriodo.descripcionPeriodo?.trim() && 
+              this.nuevoPeriodo.descripcionPeriodo.trim().length >= 1 && 
+              this.nuevoPeriodo.descripcionPeriodo.trim().length <= 100);
   }
 
   get puedeEditar(): boolean {

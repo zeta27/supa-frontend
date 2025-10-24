@@ -1,4 +1,4 @@
-/* cat-areas.component.scss */
+/* cat-periodos.component.scss */
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :host {
@@ -35,8 +35,22 @@
       align-items: flex-end !important;
       gap: 12px;
       
-      .nombre-field {
-        min-width: 280px;
+      .descripcion-field {
+        min-width: 250px;
+        
+        .mat-mdc-form-field-infix {
+          min-height: 40px;
+        }
+        
+        input {
+          font-family: 'Roboto', sans-serif !important;
+          font-size: 0.875rem !important;
+          cursor: text;
+        }
+      }
+
+      .fecha-field {
+        min-width: 160px;
         
         .mat-mdc-form-field-infix {
           min-height: 40px;
@@ -55,7 +69,7 @@
     }
     
     .search-container {
-      max-width: 350px !important;
+      max-width: 380px !important;
       
       .search-field {
         width: 100% !important;
@@ -111,7 +125,7 @@
               border-bottom: 1px solid var(--Gray_300);
               font-family: 'Roboto', sans-serif !important;
               
-              .area-info {
+              .periodo-info {
                 .inline-edit-container {
                   width: 100%;
                   
@@ -126,6 +140,21 @@
                       color: var(--Blue_Gray_700) !important;
                       cursor: text;
                     }
+                  }
+                }
+              }
+
+              .fecha-info {
+                text-align: center;
+
+                .inline-edit-fecha {
+                  width: 150px;
+                  margin-bottom: -1.25em;
+                  
+                  input {
+                    font-family: 'Roboto', sans-serif !important;
+                    font-size: 0.875rem !important;
+                    cursor: text;
                   }
                 }
               }

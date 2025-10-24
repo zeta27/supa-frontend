@@ -1,17 +1,18 @@
-<!-- cat-areas.component.html -->
+<p>cat-regiones works!</p>
+<!-- cat-regiones.component.html -->
 <div class="iframe-content">
 
   <!-- Barra de herramientas -->
   <div class="d-flex justify-content-between align-items-center px-3 mb-3">
-    <!-- Formulario de nueva área -->
+    <!-- Formulario de nueva región -->
     <div class="form-section d-flex align-items-end">
       <mat-form-field appearance="fill" class="nombre-field me-2">
-        <mat-label>Nombre del área</mat-label>
+        <mat-label>Nombre de la región</mat-label>
         <input 
           matInput 
-          [(ngModel)]="nuevaArea.darea"
-          placeholder="Ej: Ciencias de la Salud"
-          maxlength="100"
+          [(ngModel)]="nuevaRegion.dregion"
+          placeholder="Ej: Veracruz"
+          maxlength="50"
           [disabled]="estaCargandoAlgo">
       </mat-form-field>
       
@@ -20,9 +21,9 @@
         mat-icon-button
         color="primary" 
         class="add-button"
-        (click)="crearArea()"
+        (click)="crearRegion()"
         [disabled]="!formularioValido || estaCargandoAlgo"
-        matTooltip="Agregar nueva área">
+        matTooltip="Agregar nueva región">
         <mat-spinner *ngIf="creating" diameter="20"></mat-spinner>
         <mat-icon *ngIf="!creating">add</mat-icon>
       </button>
@@ -31,12 +32,12 @@
     <!-- Campo de búsqueda -->
     <div class="search-container">
       <mat-form-field appearance="fill" class="search-field">
-        <mat-label>Buscar áreas...</mat-label>
+        <mat-label>Buscar regiones...</mat-label>
         <input 
           matInput 
           placeholder="Buscar por nombre o ID..."
           [(ngModel)]="searchTerm"
-          (input)="filtrarAreas()"
+          (input)="filtrarRegiones()"
           [disabled]="estaCargandoAlgo">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
@@ -47,7 +48,7 @@
   <div *ngIf="loading" class="SpinnerPosition">
     <div class="InnerSpinner">
       <mat-spinner></mat-spinner>
-      <b class="mt-3 g-font-size-14">Cargando áreas...</b>
+      <b class="mt-3 g-font-size-14">Cargando regiones...</b>
     </div>
   </div>
 
@@ -57,23 +58,23 @@
       <div class="SpanBackground">
         <div class="Content">
           <div class="w-100">
-            <table mat-table [dataSource]="areasFiltered" class="iframe-table">
+            <table mat-table [dataSource]="regionesFiltered" class="iframe-table">
               
               <!-- Columna Nombre -->
               <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef>Nombre del Área</th>
-                <td mat-cell *matCellDef="let area">
-                  <div class="area-info">
-                    <span *ngIf="editando?.idCatAreas !== area.idCatAreas" class="area-name">
-                      {{ area.darea }}
+                <th mat-header-cell *matHeaderCellDef>Nombre de la Región</th>
+                <td mat-cell *matCellDef="let region">
+                  <div class="region-info">
+                    <span *ngIf="editando?.idCatRegion !== region.idCatRegion" class="region-name">
+                      {{ region.dregion }}
                     </span>
-                    <div *ngIf="editando?.idCatAreas === area.idCatAreas" class="inline-edit-container">
+                    <div *ngIf="editando?.idCatRegion === region.idCatRegion" class="inline-edit-container">
                       <mat-form-field appearance="outline" class="inline-edit-field">
                         <input 
                           matInput 
-                          [(ngModel)]="areaEditando.darea"
-                          placeholder="Nombre del área"
-                          maxlength="100"
+                          [(ngModel)]="regionEditando.dregion"
+                          placeholder="Nombre de la región"
+                          maxlength="50"
                           [disabled]="updating">
                       </mat-form-field>
                     </div>
@@ -84,30 +85,30 @@
               <!-- Columna Acciones -->
               <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                <td mat-cell *matCellDef="let area">
+                <td mat-cell *matCellDef="let region">
                   <div class="d-flex justify-content-center iframe-actions">
-                    <ng-container *ngIf="editando?.idCatAreas !== area.idCatAreas; else modoEdicion">
+                    <ng-container *ngIf="editando?.idCatRegion !== region.idCatRegion; else modoEdicion">
                       <button 
                         mat-icon-button 
-                        (click)="prepararEdicion(area)"
+                        (click)="prepararEdicion(region)"
                         [disabled]="!puedeEditar"
-                        matTooltip="Editar área">
+                        matTooltip="Editar región">
                         <mat-icon class="text-primary">edit</mat-icon>
                       </button>
                       
                       <button 
                         mat-icon-button
-                        (click)="eliminarArea(area.idCatAreas)"
+                        (click)="eliminarRegion(region.idCatRegion)"
                         [disabled]="estaCargandoAlgo"
-                        matTooltip="Eliminar área">
+                        matTooltip="Eliminar región">
                         <mat-icon class="text-danger">delete</mat-icon>
                       </button>
                     </ng-container>
                     <ng-template #modoEdicion>
                       <button 
                         mat-icon-button 
-                        (click)="actualizarArea()"
-                        [disabled]="updating || !areaEditando.darea?.trim()"
+                        (click)="actualizarRegion()"
+                        [disabled]="updating || !regionEditando.dregion?.trim()"
                         matTooltip="Guardar cambios">
                         <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
                         <mat-icon *ngIf="!updating" class="text-success">save</mat-icon>
@@ -130,13 +131,13 @@
             </table>
 
             <!-- Mensaje sin datos -->
-            <div *ngIf="areasFiltered.length === 0 && !loading" class="text-center p-4">
-              <mat-icon class="no-data-icon">{{ searchTerm ? 'search_off' : 'domain' }}</mat-icon>
+            <div *ngIf="regionesFiltered.length === 0 && !loading" class="text-center p-4">
+              <mat-icon class="no-data-icon">{{ searchTerm ? 'search_off' : 'map' }}</mat-icon>
               <h4 class="g-font-size-16 roboto-medium text-muted mb-2">
-                {{ searchTerm ? 'Sin resultados' : 'No hay áreas registradas' }}
+                {{ searchTerm ? 'Sin resultados' : 'No hay regiones registradas' }}
               </h4>
               <p class="text-muted g-font-size-14">
-                {{ searchTerm ? 'No se encontraron áreas' : 'Agregue la primera área' }}
+                {{ searchTerm ? 'No se encontraron regiones' : 'Agregue la primera región' }}
               </p>
               <button 
                 *ngIf="searchTerm"

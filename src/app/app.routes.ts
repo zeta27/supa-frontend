@@ -6,7 +6,8 @@ import { CatAreaDedicaComponent } from './catalogos/cat-area-dedica/cat-area-ded
 import { CatDisciplinasComponent } from './catalogos/cat-disciplinas/cat-disciplinas.component'; 
 import { CatEstadoApoyoComponent } from './catalogos/cat-estadoapoyo/cat-estadoapoyo.component';
 import { CatGradoCAComponent } from './catalogos/cat-gradoca/cat-gradoca.component';
-
+import { CatMotivosComponent } from './catalogos/cat-motivos/cat-motivos.component'; 
+import { CatPeriodosComponent } from './catalogos/cat-periodos/cat-periodos.component';
 
 
 
@@ -35,17 +36,24 @@ export const routes: Routes = [
     component: CatDisciplinasComponent 
   },
   { 
-  path: 'catalogo/cat-estadoapoyo',  
-  component: CatEstadoApoyoComponent 
-},
+    path: 'catalogo/cat-estadoapoyo',  
+    component: CatEstadoApoyoComponent 
+  },
+  { 
+    path: 'catalogo/cat-gradoca',  
+    component: CatGradoCAComponent 
+  },
+  { 
+    path: 'catalogo/cat-motivos', 
+    component: CatMotivosComponent 
+  },
 { 
-  path: 'catalogo/cat-gradoca',  
-  component: CatGradoCAComponent 
-} 
+  path: 'catalogo/cat-periodos',
+  component: CatPeriodosComponent 
+}
 
-  // Aquí agregarás las demás rutas standalone:
   // { path: 'catalogo/cat-nacionalidades', component: CatNacionalidadesComponent },
-  // { path: 'catalogo/cat-motivos', component: CatMotivosComponent },
+  // { path: 'catalogo/cat-roles', component: CatRolesComponent },
   // { path: 'modulo/academicos', component: AcademicosComponent },
-  // etc.
+
 ];

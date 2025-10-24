@@ -1,4 +1,4 @@
-// cat-area-dedica.component.ts
+// cat-roles.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,13 +17,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Subject, takeUntil, finalize, catchError, of, timer } from 'rxjs';
 
-interface SUPACatAreaDedica {
-  idCatAreaDedica: number;
-  dAreaDedica: string;
+interface SUPACatRoles {
+  idCatRol: number;
+  dRol: string;
 }
 
 @Component({
-  selector: 'app-cat-area-dedica',
+  selector: 'app-cat-roles',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,19 +39,19 @@ interface SUPACatAreaDedica {
     MatTooltipModule,
     MatSnackBarModule
   ],
-  templateUrl: './cat-area-dedica.component.html',
-  styleUrls: ['./cat-area-dedica.component.scss']
+  templateUrl: './cat-roles.component.html',
+  styleUrls: ['./cat-roles.component.scss']
 })
-export class CatAreaDedicaComponent implements OnInit, OnDestroy {
+export class CatRolesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatAreaDedica';
+  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatRoles';
 
   // Data properties
-  areasDedica: SUPACatAreaDedica[] = [];
-  areasDedicaFiltered: SUPACatAreaDedica[] = [];
-  nuevaAreaDedica: Partial<SUPACatAreaDedica> = {};
-  editando: SUPACatAreaDedica | null = null;
-  areaDedicaEditando: Partial<SUPACatAreaDedica> = {};
+  roles: SUPACatRoles[] = [];
+  rolesFiltered: SUPACatRoles[] = [];
+  nuevoRol: Partial<SUPACatRoles> = {};
+  editando: SUPACatRoles | null = null;
+  rolEditando: Partial<SUPACatRoles> = {};
 
   // UI properties
   loading = false;
@@ -68,7 +68,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.cargarAreasDedica();
+    this.cargarRoles();
   }
 
   ngOnDestroy(): void {
@@ -76,38 +76,38 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  crearAreaDedica(): void {
-    if (!this.nuevaAreaDedica.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  crearRol(): void {
+    if (!this.nuevoRol.dRol?.trim()) {
+      this.mostrarMensaje('El nombre del rol es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.nuevaAreaDedica.dAreaDedica.trim()
+    const rolData = {
+      dRol: this.nuevoRol.dRol.trim()
     };
 
     this.creating = true;
 
-    this.http.post<SUPACatAreaDedica>(this.backendUrl, areaDedicaData)
+    this.http.post<SUPACatRoles>(this.backendUrl, rolData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.creating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al crear área de dedicación:', error);
+          console.error('Error al crear rol:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Rol creado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarRoles();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al crear el área de dedicación';
+            let mensaje = 'Error al crear el rol';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe un rol con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -124,22 +124,22 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
-            this.nuevaAreaDedica = {};
-            this.cargarAreasDedica();
+            this.mostrarMensaje('Rol creado exitosamente', 'snackBar-dialog');
+            this.nuevoRol = {};
+            this.cargarRoles();
           }
         }
       });
   }
 
-  prepararEdicion(areaDedica: SUPACatAreaDedica): void {
+  prepararEdicion(rol: SUPACatRoles): void {
     if (this.editando) {
       this.cancelarEdicion();
     }
     
-    this.editando = { ...areaDedica };
-    this.areaDedicaEditando = { 
-      dAreaDedica: areaDedica.dAreaDedica
+    this.editando = { ...rol };
+    this.rolEditando = { 
+      dRol: rol.dRol
     };
     
     setTimeout(() => {
@@ -151,39 +151,39 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  actualizarAreaDedica(): void {
-    if (!this.editando || !this.areaDedicaEditando.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  actualizarRol(): void {
+    if (!this.editando || !this.rolEditando.dRol?.trim()) {
+      this.mostrarMensaje('El nombre del rol es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.areaDedicaEditando.dAreaDedica.trim()
+    const rolData = {
+      dRol: this.rolEditando.dRol.trim()
     };
 
     this.updating = true;
 
-    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatAreaDedica}`, areaDedicaData)
+    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatRol}`, rolData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.updating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al actualizar área de dedicación:', error);
+          console.error('Error al actualizar rol:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Rol actualizado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarRoles();
               this.cancelarEdicion();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al actualizar el área de dedicación';
+            let mensaje = 'Error al actualizar el rol';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe un rol con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -200,9 +200,9 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Rol actualizado exitosamente', 'snackBar-dialog');
             this.cancelarEdicion();
-            this.cargarAreasDedica();
+            this.cargarRoles();
           }
         }
       });
@@ -210,19 +210,19 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
 
   cancelarEdicion(): void {
     this.editando = null;
-    this.areaDedicaEditando = {};
+    this.rolEditando = {};
   }
 
-  cargarAreasDedica(): void {
+  cargarRoles(): void {
     this.loading = true;
     
-    this.http.get<SUPACatAreaDedica[]>(this.backendUrl)
+    this.http.get<SUPACatRoles[]>(this.backendUrl)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.loading = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al cargar áreas de dedicación:', error);
-          let mensaje = 'Error al cargar las áreas de dedicación';
+          console.error('Error al cargar roles:', error);
+          let mensaje = 'Error al cargar los roles';
           
           if (error.status === 0) {
             mensaje = 'Error de conexión con el servidor';
@@ -234,17 +234,17 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (data) => {
-          this.areasDedica = data;
-          this.filtrarAreasDedica();
+          this.roles = data;
+          this.filtrarRoles();
         }
       });
   }
 
-  eliminarAreaDedica(id: number): void {
-    const areaDedica = this.areasDedica.find(a => a.idCatAreaDedica === id);
-    if (!areaDedica) return;
+  eliminarRol(id: number): void {
+    const rol = this.roles.find(r => r.idCatRol === id);
+    if (!rol) return;
 
-    const confirmacion = confirm(`¿Está seguro de que desea eliminar el área de dedicación "${areaDedica.dAreaDedica}"?\n\nEsta acción no se puede deshacer.`);
+    const confirmacion = confirm(`¿Está seguro de que desea eliminar el rol "${rol.dRol}"?\n\nEsta acción no se puede deshacer.`);
     if (!confirmacion) return;
 
     this.deleting = true;
@@ -254,21 +254,21 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.deleting = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al eliminar área de dedicación:', error);
+          console.error('Error al eliminar rol:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación eliminada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Rol eliminado exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarRoles();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al eliminar el área de dedicación';
+            let mensaje = 'Error al eliminar el rol';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'No se puede eliminar el área de dedicación porque está siendo utilizada por otros registros';
+              mensaje = 'No se puede eliminar el rol porque está siendo utilizado por otros registros';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -285,33 +285,33 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje(`Área de dedicación "${areaDedica.dAreaDedica}" eliminada exitosamente`, 'snackBar-dialog');
+            this.mostrarMensaje(`Rol "${rol.dRol}" eliminado exitosamente`, 'snackBar-dialog');
             
-            if (this.editando?.idCatAreaDedica === id) {
+            if (this.editando?.idCatRol === id) {
               this.cancelarEdicion();
             }
             
-            this.cargarAreasDedica();
+            this.cargarRoles();
           }
         }
       });
   }
 
-  filtrarAreasDedica(): void {
+  filtrarRoles(): void {
     if (!this.searchTerm.trim()) {
-      this.areasDedicaFiltered = [...this.areasDedica];
+      this.rolesFiltered = [...this.roles];
     } else {
       const termino = this.searchTerm.toLowerCase().trim();
-      this.areasDedicaFiltered = this.areasDedica.filter(area =>
-        area.dAreaDedica.toLowerCase().includes(termino) ||
-        area.idCatAreaDedica.toString().includes(termino)
+      this.rolesFiltered = this.roles.filter(rol =>
+        rol.dRol.toLowerCase().includes(termino) ||
+        rol.idCatRol.toString().includes(termino)
       );
     }
   }
 
   limpiarBusqueda(): void {
     this.searchTerm = '';
-    this.filtrarAreasDedica();
+    this.filtrarRoles();
   }
 
   private mostrarMensaje(mensaje: string, panelClass: string): void {
@@ -323,14 +323,14 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     });
   }
 
-  trackByAreaDedicaId(index: number, areaDedica: SUPACatAreaDedica): number {
-    return areaDedica.idCatAreaDedica;
+  trackByRolId(index: number, rol: SUPACatRoles): number {
+    return rol.idCatRol;
   }
 
   get formularioValido(): boolean {
-    return !!(this.nuevaAreaDedica.dAreaDedica?.trim() && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length >= 1 && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length <= 50);
+    return !!(this.nuevoRol.dRol?.trim() && 
+              this.nuevoRol.dRol.trim().length >= 1 && 
+              this.nuevoRol.dRol.trim().length <= 15);
   }
 
   get puedeEditar(): boolean {

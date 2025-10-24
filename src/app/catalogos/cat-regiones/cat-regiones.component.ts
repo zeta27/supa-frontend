@@ -1,4 +1,4 @@
-// cat-area-dedica.component.ts
+// cat-regiones.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,13 +17,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Subject, takeUntil, finalize, catchError, of, timer } from 'rxjs';
 
-interface SUPACatAreaDedica {
-  idCatAreaDedica: number;
-  dAreaDedica: string;
+interface SUPACatRegion {
+  idCatRegion: number;
+  dregion: string;
 }
 
 @Component({
-  selector: 'app-cat-area-dedica',
+  selector: 'app-cat-regiones',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,19 +39,19 @@ interface SUPACatAreaDedica {
     MatTooltipModule,
     MatSnackBarModule
   ],
-  templateUrl: './cat-area-dedica.component.html',
-  styleUrls: ['./cat-area-dedica.component.scss']
+  templateUrl: './cat-regiones.component.html',
+  styleUrls: ['./cat-regiones.component.scss']
 })
-export class CatAreaDedicaComponent implements OnInit, OnDestroy {
+export class CatRegionesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatAreaDedica';
+  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatRegion';
 
   // Data properties
-  areasDedica: SUPACatAreaDedica[] = [];
-  areasDedicaFiltered: SUPACatAreaDedica[] = [];
-  nuevaAreaDedica: Partial<SUPACatAreaDedica> = {};
-  editando: SUPACatAreaDedica | null = null;
-  areaDedicaEditando: Partial<SUPACatAreaDedica> = {};
+  regiones: SUPACatRegion[] = [];
+  regionesFiltered: SUPACatRegion[] = [];
+  nuevaRegion: Partial<SUPACatRegion> = {};
+  editando: SUPACatRegion | null = null;
+  regionEditando: Partial<SUPACatRegion> = {};
 
   // UI properties
   loading = false;
@@ -68,7 +68,7 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.cargarAreasDedica();
+    this.cargarRegiones();
   }
 
   ngOnDestroy(): void {
@@ -76,38 +76,38 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  crearAreaDedica(): void {
-    if (!this.nuevaAreaDedica.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  crearRegion(): void {
+    if (!this.nuevaRegion.dregion?.trim()) {
+      this.mostrarMensaje('El nombre de la región es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.nuevaAreaDedica.dAreaDedica.trim()
+    const regionData = {
+      dregion: this.nuevaRegion.dregion.trim()
     };
 
     this.creating = true;
 
-    this.http.post<SUPACatAreaDedica>(this.backendUrl, areaDedicaData)
+    this.http.post<SUPACatRegion>(this.backendUrl, regionData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.creating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al crear área de dedicación:', error);
+          console.error('Error al crear región:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Región creada exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarRegiones();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al crear el área de dedicación';
+            let mensaje = 'Error al crear la región';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe una región con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -124,22 +124,22 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación creada exitosamente', 'snackBar-dialog');
-            this.nuevaAreaDedica = {};
-            this.cargarAreasDedica();
+            this.mostrarMensaje('Región creada exitosamente', 'snackBar-dialog');
+            this.nuevaRegion = {};
+            this.cargarRegiones();
           }
         }
       });
   }
 
-  prepararEdicion(areaDedica: SUPACatAreaDedica): void {
+  prepararEdicion(region: SUPACatRegion): void {
     if (this.editando) {
       this.cancelarEdicion();
     }
     
-    this.editando = { ...areaDedica };
-    this.areaDedicaEditando = { 
-      dAreaDedica: areaDedica.dAreaDedica
+    this.editando = { ...region };
+    this.regionEditando = { 
+      dregion: region.dregion
     };
     
     setTimeout(() => {
@@ -151,39 +151,39 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  actualizarAreaDedica(): void {
-    if (!this.editando || !this.areaDedicaEditando.dAreaDedica?.trim()) {
-      this.mostrarMensaje('El nombre del área de dedicación es requerido', 'snackBar-dialog-Warning');
+  actualizarRegion(): void {
+    if (!this.editando || !this.regionEditando.dregion?.trim()) {
+      this.mostrarMensaje('El nombre de la región es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const areaDedicaData = {
-      dAreaDedica: this.areaDedicaEditando.dAreaDedica.trim()
+    const regionData = {
+      dregion: this.regionEditando.dregion.trim()
     };
 
     this.updating = true;
 
-    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatAreaDedica}`, areaDedicaData)
+    this.http.put<any>(`${this.backendUrl}/${this.editando.idCatRegion}`, regionData)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.updating = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al actualizar área de dedicación:', error);
+          console.error('Error al actualizar región:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Región actualizada exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarRegiones();
               this.cancelarEdicion();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al actualizar el área de dedicación';
+            let mensaje = 'Error al actualizar la región';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'Ya existe un área de dedicación con este nombre';
+              mensaje = 'Ya existe una región con este nombre';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -200,9 +200,9 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje('Área de dedicación actualizada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Región actualizada exitosamente', 'snackBar-dialog');
             this.cancelarEdicion();
-            this.cargarAreasDedica();
+            this.cargarRegiones();
           }
         }
       });
@@ -210,19 +210,19 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
 
   cancelarEdicion(): void {
     this.editando = null;
-    this.areaDedicaEditando = {};
+    this.regionEditando = {};
   }
 
-  cargarAreasDedica(): void {
+  cargarRegiones(): void {
     this.loading = true;
     
-    this.http.get<SUPACatAreaDedica[]>(this.backendUrl)
+    this.http.get<SUPACatRegion[]>(this.backendUrl)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => this.loading = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al cargar áreas de dedicación:', error);
-          let mensaje = 'Error al cargar las áreas de dedicación';
+          console.error('Error al cargar regiones:', error);
+          let mensaje = 'Error al cargar las regiones';
           
           if (error.status === 0) {
             mensaje = 'Error de conexión con el servidor';
@@ -234,17 +234,17 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (data) => {
-          this.areasDedica = data;
-          this.filtrarAreasDedica();
+          this.regiones = data;
+          this.filtrarRegiones();
         }
       });
   }
 
-  eliminarAreaDedica(id: number): void {
-    const areaDedica = this.areasDedica.find(a => a.idCatAreaDedica === id);
-    if (!areaDedica) return;
+  eliminarRegion(id: number): void {
+    const region = this.regiones.find(r => r.idCatRegion === id);
+    if (!region) return;
 
-    const confirmacion = confirm(`¿Está seguro de que desea eliminar el área de dedicación "${areaDedica.dAreaDedica}"?\n\nEsta acción no se puede deshacer.`);
+    const confirmacion = confirm(`¿Está seguro de que desea eliminar la región "${region.dregion}"?\n\nEsta acción no se puede deshacer.`);
     if (!confirmacion) return;
 
     this.deleting = true;
@@ -254,21 +254,21 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         finalize(() => this.deleting = false),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error al eliminar área de dedicación:', error);
+          console.error('Error al eliminar región:', error);
           
           if (error.status === 500) {
-            this.mostrarMensaje('Área de dedicación eliminada exitosamente', 'snackBar-dialog');
+            this.mostrarMensaje('Región eliminada exitosamente', 'snackBar-dialog');
             
             timer(1000).subscribe(() => {
-              this.cargarAreasDedica();
+              this.cargarRegiones();
             });
             
             return of({ success: true });
           } else {
-            let mensaje = 'Error al eliminar el área de dedicación';
+            let mensaje = 'Error al eliminar la región';
             
             if (error.status === 409 || error.status === 400) {
-              mensaje = 'No se puede eliminar el área de dedicación porque está siendo utilizada por otros registros';
+              mensaje = 'No se puede eliminar la región porque está siendo utilizada por otros registros';
             } else if (error.status === 0) {
               mensaje = 'Error de conexión con el servidor';
             }
@@ -285,33 +285,33 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
               return;
             }
             
-            this.mostrarMensaje(`Área de dedicación "${areaDedica.dAreaDedica}" eliminada exitosamente`, 'snackBar-dialog');
+            this.mostrarMensaje(`Región "${region.dregion}" eliminada exitosamente`, 'snackBar-dialog');
             
-            if (this.editando?.idCatAreaDedica === id) {
+            if (this.editando?.idCatRegion === id) {
               this.cancelarEdicion();
             }
             
-            this.cargarAreasDedica();
+            this.cargarRegiones();
           }
         }
       });
   }
 
-  filtrarAreasDedica(): void {
+  filtrarRegiones(): void {
     if (!this.searchTerm.trim()) {
-      this.areasDedicaFiltered = [...this.areasDedica];
+      this.regionesFiltered = [...this.regiones];
     } else {
       const termino = this.searchTerm.toLowerCase().trim();
-      this.areasDedicaFiltered = this.areasDedica.filter(area =>
-        area.dAreaDedica.toLowerCase().includes(termino) ||
-        area.idCatAreaDedica.toString().includes(termino)
+      this.regionesFiltered = this.regiones.filter(region =>
+        region.dregion.toLowerCase().includes(termino) ||
+        region.idCatRegion.toString().includes(termino)
       );
     }
   }
 
   limpiarBusqueda(): void {
     this.searchTerm = '';
-    this.filtrarAreasDedica();
+    this.filtrarRegiones();
   }
 
   private mostrarMensaje(mensaje: string, panelClass: string): void {
@@ -323,14 +323,14 @@ export class CatAreaDedicaComponent implements OnInit, OnDestroy {
     });
   }
 
-  trackByAreaDedicaId(index: number, areaDedica: SUPACatAreaDedica): number {
-    return areaDedica.idCatAreaDedica;
+  trackByRegionId(index: number, region: SUPACatRegion): number {
+    return region.idCatRegion;
   }
 
   get formularioValido(): boolean {
-    return !!(this.nuevaAreaDedica.dAreaDedica?.trim() && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length >= 1 && 
-              this.nuevaAreaDedica.dAreaDedica.trim().length <= 50);
+    return !!(this.nuevaRegion.dregion?.trim() && 
+              this.nuevaRegion.dregion.trim().length >= 1 && 
+              this.nuevaRegion.dregion.trim().length <= 50);
   }
 
   get puedeEditar(): boolean {

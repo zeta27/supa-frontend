@@ -1,4 +1,4 @@
-<!-- cat-area-dedica.component.html - COPIA EXACTA DE CAT-AREAS -->
+<!-- cat-area-dedica.component.html -->
 <div class="iframe-content">
 
   <!-- Barra de herramientas -->
@@ -10,8 +10,8 @@
         <input 
           matInput 
           [(ngModel)]="nuevaAreaDedica.dAreaDedica"
-          placeholder="Ingrese el nombre del área de dedicación"
-          maxlength="100"
+          placeholder="Ej: Tiempo Completo"
+          maxlength="50"
           [disabled]="estaCargandoAlgo">
       </mat-form-field>
       
@@ -63,8 +63,8 @@
               <ng-container matColumnDef="nombre">
                 <th mat-header-cell *matHeaderCellDef>Nombre del Área de Dedicación</th>
                 <td mat-cell *matCellDef="let areaDedica">
-                  <div class="area-info">
-                    <span *ngIf="editando?.idCatAreaDedica !== areaDedica.idCatAreaDedica" class="area-name">
+                  <div class="area-dedica-info">
+                    <span *ngIf="editando?.idCatAreaDedica !== areaDedica.idCatAreaDedica" class="area-dedica-name">
                       {{ areaDedica.dAreaDedica }}
                     </span>
                     <div *ngIf="editando?.idCatAreaDedica === areaDedica.idCatAreaDedica" class="inline-edit-container">
@@ -73,7 +73,7 @@
                           matInput 
                           [(ngModel)]="areaDedicaEditando.dAreaDedica"
                           placeholder="Nombre del área de dedicación"
-                          maxlength="100"
+                          maxlength="50"
                           [disabled]="updating">
                       </mat-form-field>
                     </div>

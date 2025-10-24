@@ -111,7 +111,7 @@
               border-bottom: 1px solid var(--Gray_300);
               font-family: 'Roboto', sans-serif !important;
               
-              .area-info {
+              .area-dedica-info {
                 .inline-edit-container {
                   width: 100%;
                   
@@ -131,6 +131,9 @@
               }
               
               .iframe-actions {
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
                 gap: 6px !important;
                 
                 .action-btn {

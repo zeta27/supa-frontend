@@ -1,4 +1,4 @@
-// cat-areas.component.ts - COPIA EXACTA DE SISPLAN
+// cat-areas.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -75,40 +75,28 @@ export class CatAreasComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-  
+
   crearArea(): void {
     if (!this.nuevaArea.darea?.trim()) {
       this.mostrarMensaje('El nombre del área es requerido', 'snackBar-dialog-Warning');
       return;
     }
 
-    const nombreArea = this.nuevaArea.darea.trim();
-
-    const nombreExiste = this.areas.some(area => 
-      area.darea.toLowerCase() === nombreArea.toLowerCase()
-    );
-
-    if (nombreExiste) {
-      this.mostrarMensaje('Ya existe un área con este nombre', 'snackBar-dialog-Warning');
-      return;
-    }
-
-    const areaData = { darea: nombreArea };
+    const areaData = {
+      darea: this.nuevaArea.darea.trim()
+    };
 
     this.creating = true;
 
-    this.http.post<any>(this.backendUrl, areaData)
+    this.http.post<SUPACatAreas>(this.backendUrl, areaData)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => {
-          this.creating = false;
-        }),
+        finalize(() => this.creating = false),
         catchError((error: HttpErrorResponse) => {
           console.error('Error al crear área:', error);
           
           if (error.status === 500) {
             this.mostrarMensaje('Área creada exitosamente', 'snackBar-dialog');
-            this.nuevaArea = {};
             
             timer(1000).subscribe(() => {
               this.cargarAreas();
@@ -132,7 +120,7 @@ export class CatAreasComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response) {
-            if (response.success !== undefined) {
+            if (response.hasOwnProperty('success')) {
               return;
             }
             
@@ -150,7 +138,9 @@ export class CatAreasComponent implements OnInit, OnDestroy {
     }
     
     this.editando = { ...area };
-    this.areaEditando = { darea: area.darea };
+    this.areaEditando = { 
+      darea: area.darea
+    };
     
     setTimeout(() => {
       const input = document.querySelector('.inline-edit-field input') as HTMLInputElement;
@@ -167,21 +157,8 @@ export class CatAreasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const nuevoNombre = this.areaEditando.darea.trim();
-
-    const nombreExiste = this.areas.some(area => 
-      area.darea.toLowerCase() === nuevoNombre.toLowerCase() &&
-      area.idCatAreas !== this.editando!.idCatAreas
-    );
-
-    if (nombreExiste) {
-      this.mostrarMensaje('Ya existe un área con este nombre', 'snackBar-dialog-Warning');
-      return;
-    }
-
     const areaData = {
-      idCatAreas: this.editando.idCatAreas,
-      darea: nuevoNombre
+      darea: this.areaEditando.darea.trim()
     };
 
     this.updating = true;
