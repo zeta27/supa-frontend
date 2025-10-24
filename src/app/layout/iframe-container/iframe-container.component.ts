@@ -93,13 +93,13 @@ export class IframeContainerComponent implements OnInit, OnDestroy {
     { label: 'Nacionalidades', route: 'cat-nacionalidades', icon: 'flag' },
     { label: 'Motivos', route: 'cat-motivos', icon: 'help_outline' },
     { label: 'Roles', route: 'cat-roles', icon: 'security' },
-    { label: 'Nivel de Estudios', route: 'cat-nivel-estudios', icon: 'school' },
+    { label: 'Nivel de Estudios', route: 'cat-nivelestudios', icon: 'school' },
     { label: 'Regiones', route: 'cat-regiones', icon: 'map' },
     { label: 'Entidades', route: 'cat-entidades', icon: 'business' },
     { label: 'Períodos', route: 'cat-periodos', icon: 'date_range' },
     { label: 'Disciplinas', route: 'cat-disciplinas', icon: 'science' },
     { label: 'Estados de Apoyo',route: 'cat-estadoapoyo', icon: 'info' },
-     { label: 'Grados CA', route: 'cat-gradoca' , icon: 'grade'}
+    { label: 'Grados CA', route: 'cat-gradoca' , icon: 'grade'}
   ];
 
   constructor(

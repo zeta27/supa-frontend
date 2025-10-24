@@ -80,7 +80,7 @@ export class SidebarComponent {
         { name: 'Nacionalidades', icon: 'flag', route: 'cat-nacionalidades' },
         { name: 'Motivos', icon: 'help_outline', route: 'cat-motivos' },
         { name: 'Roles', icon: 'security', route: 'cat-roles' },
-        { name: 'Nivel de Estudios', icon: 'school', route: 'cat-nivel-estudios' },
+        { name: 'Nivel de Estudios', icon: 'school', route: 'cat-nivelestudios' },
         { name: 'Regiones', icon: 'map', route: 'cat-regiones' },
         { name: 'Entidades', icon: 'business', route: 'cat-entidades' },
         { name: 'Períodos', icon: 'date_range', route: 'cat-periodos' },

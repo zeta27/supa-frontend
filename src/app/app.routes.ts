@@ -8,8 +8,10 @@ import { CatEstadoApoyoComponent } from './catalogos/cat-estadoapoyo/cat-estadoa
 import { CatGradoCAComponent } from './catalogos/cat-gradoca/cat-gradoca.component';
 import { CatMotivosComponent } from './catalogos/cat-motivos/cat-motivos.component'; 
 import { CatPeriodosComponent } from './catalogos/cat-periodos/cat-periodos.component';
-
-
+import { CatNacionalidadesComponent } from './catalogos/cat-nacionalidades/cat-nacionalidades.component';
+import { CatRolesComponent } from './catalogos/cat-roles/cat-roles.component';
+import { CatRegionesComponent } from './catalogos/cat-regiones/cat-regiones.component';
+import { CatEntidadesComponent } from './catalogos/cat-entidades/cat-entidades.component';
 
 export const routes: Routes = [
   // Ruta principal CON layout (para desarrollo)
@@ -50,10 +52,23 @@ export const routes: Routes = [
 { 
   path: 'catalogo/cat-periodos',
   component: CatPeriodosComponent 
+},
+{ 
+	path: 'catalogo/cat-nacionalidades', 
+	component: CatNacionalidadesComponent 
+},
+{ 
+	path: 'catalogo/cat-roles', 
+	component: CatRolesComponent 
+},
+{
+	path: 'catalogo/cat-regiones',
+	component: CatRegionesComponent
+},
+{
+	path: 'catalogo/cat-entidades',
+	component: CatEntidadesComponent
 }
-
-  // { path: 'catalogo/cat-nacionalidades', component: CatNacionalidadesComponent },
-  // { path: 'catalogo/cat-roles', component: CatRolesComponent },
   // { path: 'modulo/academicos', component: AcademicosComponent },
 
 ];
