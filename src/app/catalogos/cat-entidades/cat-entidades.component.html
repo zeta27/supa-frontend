@@ -1,4 +1,4 @@
-<!-- cat-entidades.component.html -->
+<!-- cat-entidades.component.html - RENOVADO CON ESTILO DE CAT-ROLES -->
 <div class="iframe-content">
 
   <!-- Barra de herramientas -->
@@ -87,172 +87,166 @@
   <div *ngIf="!loadingCatalogos" class="px-3 pb-3">
     <div class="iframe-table-container">
       <div class="SpanBackground">
-        <span class="title-table">
-          <mat-icon>business</mat-icon>
-          Catálogo de Entidades
-        </span>
-      </div>
-      
-      <div class="Content">
-        <table mat-table [dataSource]="entidadesFiltered" class="iframe-table">
+        <div class="Content">
+          <div class="w-100">
+            <table mat-table [dataSource]="entidadesFiltered" class="iframe-table">
 
-          <!-- Columna: Nombre de Entidad -->
-          <ng-container matColumnDef="dentidad">
-            <th mat-header-cell *matHeaderCellDef class="text-center">
-              <strong>NOMBRE</strong>
-            </th>
-            <td mat-cell *matCellDef="let entidad" class="text-center">
-              <mat-form-field 
-                *ngIf="editando?.idCatEntidades === entidad.idCatEntidades; else showDentidad"
-                appearance="fill" 
-                class="inline-edit-field">
-                <input 
-                  matInput 
-                  [(ngModel)]="entidadEditando.dentidad"
-                  maxlength="50"
-                  [disabled]="updating">
-              </mat-form-field>
-              <ng-template #showDentidad>
-                <span>{{ entidad.dentidad }}</span>
-              </ng-template>
-            </td>
-          </ng-container>
+              <!-- Columna: Nombre de Entidad -->
+              <ng-container matColumnDef="dentidad">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let entidad">
+                  <div class="entidad-info">
+                    <span *ngIf="editando?.idCatEntidades !== entidad.idCatEntidades" class="entidad-name">
+                      {{ entidad.dentidad }}
+                    </span>
+                    <div *ngIf="editando?.idCatEntidades === entidad.idCatEntidades" class="inline-edit-container">
+                      <mat-form-field appearance="outline" class="inline-edit-field">
+                        <input 
+                          matInput 
+                          [(ngModel)]="entidadEditando.dentidad"
+                          maxlength="50"
+                          [disabled]="updating">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
 
-          <!-- Columna: Identificador UV -->
-          <ng-container matColumnDef="identidadUV">
-            <th mat-header-cell *matHeaderCellDef class="text-center">
-              <strong>ID UV</strong>
-            </th>
-            <td mat-cell *matCellDef="let entidad" class="text-center">
-              <mat-form-field 
-                *ngIf="editando?.idCatEntidades === entidad.idCatEntidades; else showIdentidadUV"
-                appearance="fill" 
-                class="inline-edit-field">
-                <input 
-                  matInput 
-                  [(ngModel)]="entidadEditando.identidadUV"
-                  maxlength="100"
-                  [disabled]="updating">
-              </mat-form-field>
-              <ng-template #showIdentidadUV>
-                <span>{{ entidad.identidadUV }}</span>
-              </ng-template>
-            </td>
-          </ng-container>
+              <!-- Columna: Identificador UV -->
+              <ng-container matColumnDef="identidadUV">
+                <th mat-header-cell *matHeaderCellDef>ID UV</th>
+                <td mat-cell *matCellDef="let entidad">
+                  <div class="entidad-info">
+                    <span *ngIf="editando?.idCatEntidades !== entidad.idCatEntidades" class="entidad-name">
+                      {{ entidad.identidadUV }}
+                    </span>
+                    <div *ngIf="editando?.idCatEntidades === entidad.idCatEntidades" class="inline-edit-container">
+                      <mat-form-field appearance="outline" class="inline-edit-field">
+                        <input 
+                          matInput 
+                          [(ngModel)]="entidadEditando.identidadUV"
+                          maxlength="100"
+                          [disabled]="updating">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
 
-          <!-- Columna: Área -->
-          <ng-container matColumnDef="area">
-            <th mat-header-cell *matHeaderCellDef class="text-center">
-              <strong>ÁREA</strong>
-            </th>
-            <td mat-cell *matCellDef="let entidad" class="text-center">
-              <mat-form-field 
-                *ngIf="editando?.idCatEntidades === entidad.idCatEntidades; else showArea"
-                appearance="fill" 
-                class="inline-edit-select">
-                <mat-select 
-                  [(ngModel)]="entidadEditando.idCatAreas"
-                  [disabled]="updating">
-                  <mat-option *ngFor="let area of areas" [value]="area.idCatAreas">
-                    {{ area.darea }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <ng-template #showArea>
-                <span>{{ getNombreArea(entidad.idCatAreas) }}</span>
-              </ng-template>
-            </td>
-          </ng-container>
+              <!-- Columna: Área -->
+              <ng-container matColumnDef="area">
+                <th mat-header-cell *matHeaderCellDef>Área</th>
+                <td mat-cell *matCellDef="let entidad">
+                  <div class="entidad-info">
+                    <span *ngIf="editando?.idCatEntidades !== entidad.idCatEntidades" class="entidad-name">
+                      {{ getNombreArea(entidad.idCatAreas) }}
+                    </span>
+                    <div *ngIf="editando?.idCatEntidades === entidad.idCatEntidades" class="inline-edit-container">
+                      <mat-form-field appearance="outline" class="inline-edit-select">
+                        <mat-select 
+                          [(ngModel)]="entidadEditando.idCatAreas"
+                          [disabled]="updating">
+                          <mat-option *ngFor="let area of areas" [value]="area.idCatAreas">
+                            {{ area.darea }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
 
-          <!-- Columna: Región -->
-          <ng-container matColumnDef="region">
-            <th mat-header-cell *matHeaderCellDef class="text-center">
-              <strong>REGIÓN</strong>
-            </th>
-            <td mat-cell *matCellDef="let entidad" class="text-center">
-              <mat-form-field 
-                *ngIf="editando?.idCatEntidades === entidad.idCatEntidades; else showRegion"
-                appearance="fill" 
-                class="inline-edit-select">
-                <mat-select 
-                  [(ngModel)]="entidadEditando.idCatRegion"
-                  [disabled]="updating">
-                  <mat-option *ngFor="let region of regiones" [value]="region.idCatRegion">
-                    {{ region.dregion || 'Sin nombre' }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <ng-template #showRegion>
-                <span>{{ getNombreRegion(entidad.idCatRegion) }}</span>
-              </ng-template>
-            </td>
-          </ng-container>
+              <!-- Columna: Región -->
+              <ng-container matColumnDef="region">
+                <th mat-header-cell *matHeaderCellDef>Región</th>
+                <td mat-cell *matCellDef="let entidad">
+                  <div class="entidad-info">
+                    <span *ngIf="editando?.idCatEntidades !== entidad.idCatEntidades" class="entidad-name">
+                      {{ getNombreRegion(entidad.idCatRegion) }}
+                    </span>
+                    <div *ngIf="editando?.idCatEntidades === entidad.idCatEntidades" class="inline-edit-container">
+                      <mat-form-field appearance="outline" class="inline-edit-select">
+                        <mat-select 
+                          [(ngModel)]="entidadEditando.idCatRegion"
+                          [disabled]="updating">
+                          <mat-option *ngFor="let region of regiones" [value]="region.idCatRegion">
+                            {{ region.dregion || 'Sin nombre' }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
 
-          <!-- Columna: Acciones -->
-          <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef class="text-center">
-              <strong>ACCIONES</strong>
-            </th>
-            <td mat-cell *matCellDef="let entidad" class="text-center">
-              <div class="action-buttons">
-                <!-- Modo Visualización -->
-                <ng-container *ngIf="editando?.idCatEntidades !== entidad.idCatEntidades">
-                  <button 
-                    mat-icon-button 
-                    color="primary"
-                    (click)="prepararEdicion(entidad)"
-                    [disabled]="!puedeEditar"
-                    matTooltip="Editar entidad">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  
-                  <button 
-                    mat-icon-button 
-                    color="warn"
-                    (click)="eliminarEntidad(entidad.idCatEntidades)"
-                    [disabled]="estaCargandoAlgo"
-                    matTooltip="Eliminar entidad">
-                    <mat-spinner *ngIf="deleting" diameter="20"></mat-spinner>
-                    <mat-icon *ngIf="!deleting">delete</mat-icon>
-                  </button>
-                </ng-container>
+              <!-- Columna: Acciones -->
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let entidad">
+                  <div class="d-flex justify-content-center iframe-actions">
+                    <ng-container *ngIf="editando?.idCatEntidades !== entidad.idCatEntidades; else modoEdicion">
+                      <button 
+                        mat-icon-button 
+                        (click)="prepararEdicion(entidad)"
+                        [disabled]="!puedeEditar"
+                        matTooltip="Editar entidad">
+                        <mat-icon class="text-primary">edit</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button
+                        (click)="eliminarEntidad(entidad.idCatEntidades)"
+                        [disabled]="estaCargandoAlgo"
+                        matTooltip="Eliminar entidad">
+                        <mat-icon class="text-danger">delete</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-template #modoEdicion>
+                      <button 
+                        mat-icon-button 
+                        (click)="actualizarEntidad()"
+                        [disabled]="updating"
+                        matTooltip="Guardar cambios">
+                        <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
+                        <mat-icon *ngIf="!updating" class="text-success">save</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button
+                        (click)="cancelarEdicion()"
+                        [disabled]="updating"
+                        matTooltip="Cancelar edición">
+                        <mat-icon class="text-warning">cancel</mat-icon>
+                      </button>
+                    </ng-template>
+                  </div>
+                </td>
+              </ng-container>
 
-                <!-- Modo Edición -->
-                <ng-container *ngIf="editando?.idCatEntidades === entidad.idCatEntidades">
-                  <button 
-                    mat-icon-button 
-                    color="primary"
-                    (click)="actualizarEntidad()"
-                    [disabled]="updating"
-                    matTooltip="Guardar cambios">
-                    <mat-spinner *ngIf="updating" diameter="20"></mat-spinner>
-                    <mat-icon *ngIf="!updating">save</mat-icon>
-                  </button>
-                  
-                  <button 
-                    mat-icon-button 
-                    color="warn"
-                    (click)="cancelarEdicion()"
-                    [disabled]="updating"
-                    matTooltip="Cancelar">
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </ng-container>
-              </div>
-            </td>
-          </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <!-- Sin resultados -->
-        <div *ngIf="entidadesFiltered.length === 0" class="no-results">
-          <mat-icon>search_off</mat-icon>
-          <p><strong>No se encontraron entidades</strong></p>
-          <p class="text-muted">
-            {{ searchTerm ? 'Intenta con otros términos de búsqueda' : 'Agrega la primera entidad usando el formulario' }}
-          </p>
+            <!-- Mensaje sin datos -->
+            <div *ngIf="entidadesFiltered.length === 0 && !loadingCatalogos" class="text-center p-4">
+              <mat-icon class="no-data-icon">{{ searchTerm ? 'search_off' : 'business' }}</mat-icon>
+              <h4 class="g-font-size-16 roboto-medium text-muted mb-2">
+                {{ searchTerm ? 'Sin resultados' : 'No hay entidades registradas' }}
+              </h4>
+              <p class="text-muted g-font-size-14">
+                {{ searchTerm ? 'No se encontraron entidades' : 'Agregue la primera entidad' }}
+              </p>
+              <button 
+                *ngIf="searchTerm"
+                mat-stroked-button
+                color="primary"
+                (click)="limpiarBusqueda()"
+                [disabled]="estaCargandoAlgo">
+                <mat-icon>clear</mat-icon>
+                Limpiar búsqueda
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

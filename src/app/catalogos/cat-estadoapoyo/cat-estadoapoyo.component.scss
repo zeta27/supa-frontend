@@ -1,4 +1,4 @@
-/* cat-estadoapoyo.component.scss */
+/* cat-entidades.component.scss - RENOVADO CON ESTILO DE CAT-ROLES */
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :host {
@@ -34,9 +34,10 @@
       display: flex !important;
       align-items: flex-end !important;
       gap: 12px;
+      flex-wrap: wrap;
       
       .nombre-field {
-        min-width: 320px;
+        min-width: 220px;
         
         .mat-mdc-form-field-infix {
           min-height: 40px;
@@ -48,6 +49,14 @@
           cursor: text;
         }
       }
+
+      .select-field {
+        min-width: 180px;
+        
+        .mat-mdc-form-field-infix {
+          min-height: 40px;
+        }
+      }
       
       .add-button {
         cursor: pointer !important;
@@ -55,7 +64,7 @@
     }
     
     .search-container {
-      max-width: 350px !important;
+      max-width: 380px !important;
       
       .search-field {
         width: 100% !important;
@@ -111,21 +120,27 @@
               border-bottom: 1px solid var(--Gray_300);
               font-family: 'Roboto', sans-serif !important;
               
-              .estado-info {
+              .entidad-info {
                 .inline-edit-container {
                   width: 100%;
                   
-                  .inline-edit-field {
+                  .inline-edit-field,
+                  .inline-edit-select {
                     width: 100%;
                     margin-bottom: -1.25em;
                     
-                    input {
+                    input,
+                    .mat-mdc-select {
                       font-family: 'Roboto', sans-serif !important;
                       font-size: 0.875rem !important;
                       font-weight: 500;
                       color: var(--Blue_Gray_700) !important;
                       cursor: text;
                     }
+                  }
+
+                  .inline-edit-select {
+                    min-width: 160px;
                   }
                 }
               }
@@ -161,6 +176,8 @@
   // =====================================
   .no-data-icon {
     font-size: 64px !important;
+    width: 64px !important;
+    height: 64px !important;
     color: var(--Gray_400) !important;
     margin-bottom: 16px !important;
   }
@@ -212,14 +229,31 @@
   .w-100 { width: 100% !important; }
 
   // RESPONSIVE
+  @media (max-width: 1200px) {
+    .form-section {
+      flex-wrap: wrap;
+    }
+  }
+
   @media (max-width: 768px) {
     .d-flex.justify-content-between {
       flex-direction: column !important;
       gap: 16px !important;
     }
     
+    .search-container {
+      max-width: 100% !important;
+    }
+    
     .iframe-table-container .Content {
       max-height: 360px !important;
+    }
+
+    .form-section {
+      .nombre-field,
+      .select-field {
+        min-width: 100% !important;
+      }
     }
   }
 }

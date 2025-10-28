@@ -12,6 +12,7 @@ import { CatNacionalidadesComponent } from './catalogos/cat-nacionalidades/cat-n
 import { CatRolesComponent } from './catalogos/cat-roles/cat-roles.component';
 import { CatRegionesComponent } from './catalogos/cat-regiones/cat-regiones.component';
 import { CatEntidadesComponent } from './catalogos/cat-entidades/cat-entidades.component';
+import { CatNivelEstudiosComponent } from './catalogos/cat-nivelestudios/cat-nivelestudios.component';
 
 export const routes: Routes = [
   // Ruta principal CON layout (para desarrollo)
@@ -68,7 +69,10 @@ export const routes: Routes = [
 {
 	path: 'catalogo/cat-entidades',
 	component: CatEntidadesComponent
-}
-  // { path: 'modulo/academicos', component: AcademicosComponent },
+},
+  { 
+    path: 'catalogo/cat-nivelestudios',  
+    component: CatNivelEstudiosComponent 
+  }
 
 ];

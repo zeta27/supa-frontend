@@ -1,4 +1,4 @@
-/* cat-entidades.component.scss - RENOVADO CON ESTILO DE CAT-ROLES */
+/* cat-nivelestudios.component.scss - RENOVADO CON ESTILO DE CAT-ROLES */
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :host {
@@ -34,10 +34,9 @@
       display: flex !important;
       align-items: flex-end !important;
       gap: 12px;
-      flex-wrap: wrap;
       
       .nombre-field {
-        min-width: 220px;
+        min-width: 320px;
         
         .mat-mdc-form-field-infix {
           min-height: 40px;
@@ -49,14 +48,6 @@
           cursor: text;
         }
       }
-
-      .select-field {
-        min-width: 180px;
-        
-        .mat-mdc-form-field-infix {
-          min-height: 40px;
-        }
-      }
       
       .add-button {
         cursor: pointer !important;
@@ -64,7 +55,7 @@
     }
     
     .search-container {
-      max-width: 380px !important;
+      max-width: 350px !important;
       
       .search-field {
         width: 100% !important;
@@ -120,27 +111,21 @@
               border-bottom: 1px solid var(--Gray_300);
               font-family: 'Roboto', sans-serif !important;
               
-              .entidad-info {
+              .nivel-info {
                 .inline-edit-container {
                   width: 100%;
                   
-                  .inline-edit-field,
-                  .inline-edit-select {
+                  .inline-edit-field {
                     width: 100%;
                     margin-bottom: -1.25em;
                     
-                    input,
-                    .mat-mdc-select {
+                    input {
                       font-family: 'Roboto', sans-serif !important;
                       font-size: 0.875rem !important;
                       font-weight: 500;
                       color: var(--Blue_Gray_700) !important;
                       cursor: text;
                     }
-                  }
-
-                  .inline-edit-select {
-                    min-width: 160px;
                   }
                 }
               }
@@ -229,12 +214,6 @@
   .w-100 { width: 100% !important; }
 
   // RESPONSIVE
-  @media (max-width: 1200px) {
-    .form-section {
-      flex-wrap: wrap;
-    }
-  }
-
   @media (max-width: 768px) {
     .d-flex.justify-content-between {
       flex-direction: column !important;
@@ -250,8 +229,7 @@
     }
 
     .form-section {
-      .nombre-field,
-      .select-field {
+      .nombre-field {
         min-width: 100% !important;
       }
     }
