@@ -42,7 +42,7 @@ export class SidebarComponent {
       expanded: false,
       section: 'academicos', // ← NUEVO
       children: [
-        { name: 'Académicos', icon: 'person', route: 'academicos' },
+        { name: 'Académicos', icon: 'person', route: 'ga-academicos' },
         { name: 'Apoyos Individuales', icon: 'account_balance_wallet', route: 'apoyos-eco' },
         { name: 'Plazas', icon: 'location_city', route: 'plazas' }
       ]

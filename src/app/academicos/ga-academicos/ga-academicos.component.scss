@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:host {
+    display: block;
+    height: auto;
+    min-height: auto;
+    font-family: 'Roboto', sans-serif !important;
+
+    .mat-icon {
+        font-family: 'Material Icons', sans-serif !important;
+    }
+
+    // =====================================
+    // LAYOUT PRINCIPAL 
+    // =====================================
+    .iframe-content {
+        background-color: var(--Gray_50);
+        min-height: 500px;
+        padding: 0;
+    }
+
+    .d-flex.justify-content-between {
+        background-color: var(--White);
+        padding: 20px 24px;
+        border-bottom: 2px solid var(--Blue_Gray_100);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 0 !important;
+
+        .form-section {
+            display: flex !important;
+            align-items: flex-end !important;
+            gap: 12px;
+            flex-wrap: wrap;
+
+            .nombre-field {
+                min-width: 220px;
+
+                .mat-mdc-form-field-infix {
+                    min-height: 40px;
+                }
+
+                input {
+                    font-family: 'Roboto', sans-serif !important;
+                    font-size: 0.875rem !important;
+                    cursor: text;
+                }
+            }
+
+            .select-field {
+                min-width: 180px;
+
+                .mat-mdc-form-field-infix {
+                    min-height: 40px;
+                }
+            }
+
+            .add-button {
+                cursor: pointer !important;
+            }
+        }
+
+        .search-container {
+            max-width: 380px !important;
+
+            .search-field {
+                width: 100% !important;
+
+                input {
+                    font-family: 'Roboto', sans-serif !important;
+                    font-size: 0.875rem !important;
+                    cursor: text;
+                }
+            }
+        }
+    }
+
+    .iframe-table-container {
+        background: var(--White);
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+
+        .SpanBackground {
+            background: var(--White) !important;
+            border-radius: 8px;
+
+            .Content {
+                max-height: 480px;
+                overflow-y: auto;
+
+                .iframe-table {
+                    width: 100%;
+
+
+                    .mat-mdc-header-cell {
+                        background: var(--Blue_Gray_700) !important;
+                        color: var(--White) !important;
+                        font-family: 'Roboto', sans-serif !important;
+                        font-weight: 600 !important;
+                        font-size: 0.875rem !important;
+                        padding: 16px 12px;
+                        text-align: center !important;
+                    }
+
+                    .mat-mdc-row {
+                        transition: all 0.2s ease;
+
+                        &:hover {
+                            background-color: var(--Blue_Gray_50) !important;
+                        }
+
+                        .mat-mdc-cell {
+                            padding: 16px 12px;
+                            border-bottom: 1px solid var(--Gray_300);
+                            font-family: 'Roboto', sans-serif !important;
+
+                            .academico-info {
+                                .inline-edit-container {
+                                    width: 100%;
+
+                                    .inline-edit-field,
+                                    .inline-edit-select {
+                                        width: 100%;
+                                        margin-bottom: -1.25em;
+                                    }
+
+                                    .inline-edit-select {
+                                        min-width: 160px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
