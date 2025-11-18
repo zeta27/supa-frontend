@@ -13,7 +13,8 @@ import { CatRolesComponent } from './catalogos/cat-roles/cat-roles.component';
 import { CatRegionesComponent } from './catalogos/cat-regiones/cat-regiones.component';
 import { CatEntidadesComponent } from './catalogos/cat-entidades/cat-entidades.component';
 import { CatNivelEstudiosComponent } from './catalogos/cat-nivelestudios/cat-nivelestudios.component';
-import { GaAcademicosComponent } from './academicos/ga-academicos/ga-academicos.component';
+import { GestionAcadAcademicos } from './gestion-academica/academicos/academicos.component';
+
 
 export const routes: Routes = [
   // Ruta principal CON layout (para desarrollo)
@@ -76,7 +77,7 @@ export const routes: Routes = [
     component: CatNivelEstudiosComponent
   },
   {
-    path: 'academicos/ga-academicos',
-    component: GaAcademicosComponent
+    path: 'academicos/academicos',
+    component: GestionAcadAcademicos
   }
 ];

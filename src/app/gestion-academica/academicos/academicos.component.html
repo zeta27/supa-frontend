@@ -1,0 +1,132 @@
+<div class="iframe-content">
+    <div class="d-flex justify-content-between align-items-center px-3 mb-3">
+        <div class="form-section d-flex align-items-end">
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Ingrese el nombre" maxlength="50">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Apellido Paterno</mat-label>
+                <input matInput placeholder="Ingrese apellido paterno" maxlength="50">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Apellido Materno</mat-label>
+                <input matInput placeholder="Ingrese apellido materno" maxlength="50">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>CURP</mat-label>
+                <input matInput placeholder="Ingrese CURP" maxlength="18">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Número de Personal</mat-label>
+                <input matInput placeholder="Ingrese el número de personal" maxlength="10">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="select-field me-2">
+                <mat-label>Género</mat-label>
+                <mat-select placeholder="Seleccione género">
+                    <mat-option value="1">Masculino</mat-option>
+                    <mat-option value="2">Femenino</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="select-field me-2">
+                <mat-label>Nacionalidad</mat-label>
+                <mat-select placeholder="Seleccione nacionalidad">
+                    <mat-option value="1">Mexicana</mat-option>
+                    <mat-option value="2">Extranjera</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Institución</mat-label>
+                <input matInput placeholder="Ingrese institución" maxlength="100">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Id PRODEP</mat-label>
+                <input matInput placeholder="Ingrese ID PRODEP" maxlength="10">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Cuenta UV</mat-label>
+                <input matInput placeholder="Ingrese cuenta UV" maxlength="15">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="nombre-field me-2">
+                <mat-label>Fecha de Baja</mat-label>
+                <input matInput placeholder="Seleccione la fecha de baja" type="date">
+            </mat-form-field>
+
+            <button type="button" mat-icon-button color="primary" class="add-button"
+                matTooltip="Agregar nuevo académico">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <div class="search-container">
+            <mat-form-field appearance="fill" class="search-field">
+                <mat-label>Buscar académicos...</mat-label>
+                <input matInput placeholder="Buscar por nombre, CURP, género...">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="SpinnerPosition">
+        <div class="InnerSpinner">
+            <mat-spinner></mat-spinner>
+            <b class="mt-3 g-font-size-14">Cargando académicos...</b>
+        </div>
+    </div>
+
+    <div class="px-3 pb-3">
+        <div class="iframe-table-container">
+            <div class="SpanBackground">
+                <div class="Content">
+                    <div class="w-100">
+                        <table mat-table class="iframe-table">
+
+                            <ng-container matColumnDef="Nombre">
+                                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                                <td mat-cell *matCellDef="let academico">{{ academico.Nombre }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="NP">
+                                <th mat-header-cell *matHeaderCellDef>NP</th>
+                                <td mat-cell *matCellDef="let academico">{{ academico.NP }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="CURP">
+                                <th mat-header-cell *matHeaderCellDef>CURP</th>
+                                <td mat-cell *matCellDef="let academico">{{ academico.CURP }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Genero">
+                                <th mat-header-cell *matHeaderCellDef>Género</th>
+                                <td mat-cell *matCellDef="let academico">{{ academico.Genero }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Nacionalidad">
+                                <th mat-header-cell *matHeaderCellDef>Nacionalidad</th>
+                                <td mat-cell *matCellDef="let academico">{{ academico.Nacionalidad }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Institucion">
+                                <th mat-header-cell *matHeaderCellDef>Institucion</th>
+                                <td mat-cell *matCellDef="let academico">{{ academico.Institucion }}</td>
+                            </ng-container>
+
+
+                            <tr mat-header-row
+                                *matHeaderRowDef="['Nombre', 'NP', 'CURP', 'Genero', 'Nacionalidad', 'Institucion']"></tr>
+                            <tr mat-row
+                                *matRowDef="let row; columns: ['Nombre', 'NP', 'CURP', 'Genero', 'Nacionalidad', 'Institucion'];">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
