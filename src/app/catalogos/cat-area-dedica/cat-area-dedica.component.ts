@@ -44,7 +44,7 @@ interface SUPACatAreaDedica {
 })
 export class CatAreaDedicaComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatAreaDedica';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatAreaDedica';
 
   // Data properties
   areasDedica: SUPACatAreaDedica[] = [];

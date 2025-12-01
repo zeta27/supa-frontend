@@ -44,7 +44,7 @@ interface SUPACatEstadoApoyo {
 })
 export class CatEstadoApoyoComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatEstadoApoyo';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatEstadoApoyo';
 
   // Data properties
   estadosApoyo: SUPACatEstadoApoyo[] = [];

@@ -44,7 +44,7 @@ interface SUPACatNivelEstudios {
 })
 export class CatNivelEstudiosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatNivelEstudios';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatNivelEstudios';
 
   // Data properties
   nivelesEstudios: SUPACatNivelEstudios[] = [];

@@ -44,7 +44,7 @@ interface SUPACatDisciplinas {
 })
 export class CatDisciplinasComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatDisciplinas';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatDisciplinas';
 
   // Data properties
   disciplinas: SUPACatDisciplinas[] = [];

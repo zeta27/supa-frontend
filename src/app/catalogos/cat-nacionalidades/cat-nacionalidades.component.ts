@@ -44,7 +44,7 @@ interface SUPACatNacionalidades {
 })
 export class CatNacionalidadesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatNacionalidades';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatNacionalidades';
 
   // Data properties
   nacionalidades: SUPACatNacionalidades[] = [];

@@ -44,7 +44,7 @@ interface SUPACatGeneros {
 })
 export class CatGenerosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatGeneros';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatGeneros';
 
   // Data properties
   generos: SUPACatGeneros[] = [];

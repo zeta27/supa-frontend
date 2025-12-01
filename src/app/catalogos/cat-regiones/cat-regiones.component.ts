@@ -44,7 +44,7 @@ interface SUPACatRegion {
 })
 export class CatRegionesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatRegion';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatRegion';
 
   // Data properties
   regiones: SUPACatRegion[] = [];

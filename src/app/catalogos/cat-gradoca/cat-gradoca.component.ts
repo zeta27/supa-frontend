@@ -45,7 +45,7 @@ interface SUPACatGradoCA {
 })
 export class CatGradoCAComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/Api/SUPACatGradoCA';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatGradoCA';
 
   // Data properties
   gradosCA: SUPACatGradoCA[] = [];

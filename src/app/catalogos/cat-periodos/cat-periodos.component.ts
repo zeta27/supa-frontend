@@ -50,7 +50,7 @@ interface SUPACatPeriodos {
 })
 export class CatPeriodosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatPeriodos';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatPeriodos';
 
   // Data properties
   periodos: SUPACatPeriodos[] = [];

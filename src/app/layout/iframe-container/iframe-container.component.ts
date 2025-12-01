@@ -70,7 +70,7 @@ export class IframeContainerComponent implements OnInit, OnDestroy {
 
   // Tabs por sección
   academicos: TabItem[] = [
-    { label: 'Académicos', route: 'academicos', icon: 'person' },
+    { label: 'Académicos', route: 'ga-academicos', icon: 'person' },
     { label: 'Apoyos Individuales', route: 'apoyos-eco', icon: 'account_balance_wallet' },
     { label: 'Plazas', route: 'plazas', icon: 'location_city' }
   ];
@@ -119,7 +119,7 @@ export class IframeContainerComponent implements OnInit, OnDestroy {
     
     this.academicos = this.academicos.map(item => ({
       ...item,
-      url: this.sanitizer.bypassSecurityTrustResourceUrl(`${baseUrl}/#/modulo/${item.route}`)
+      url: this.sanitizer.bypassSecurityTrustResourceUrl(`${baseUrl}/#/gestion-academica/${item.route}`)
     }));
 
     this.cuerpos = this.cuerpos.map(item => ({

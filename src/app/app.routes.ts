@@ -13,6 +13,7 @@ import { CatRolesComponent } from './catalogos/cat-roles/cat-roles.component';
 import { CatRegionesComponent } from './catalogos/cat-regiones/cat-regiones.component';
 import { CatEntidadesComponent } from './catalogos/cat-entidades/cat-entidades.component';
 import { CatNivelEstudiosComponent } from './catalogos/cat-nivelestudios/cat-nivelestudios.component';
+import { GaAcademicosComponent } from './gestion-academica/ga-academicos/ga-academicos.component'; // 👈 AGREGAR ESTE IMPORT
 
 export const routes: Routes = [
   // Ruta principal CON layout (para desarrollo)
@@ -21,7 +22,7 @@ export const routes: Routes = [
     component: MainLayoutComponent
   },
 
-  // Rutas STANDALONE (sin layout) para usar en iframes
+  // Rutas STANDALONE (sin layout) para usar en iframes - CATÁLOGOS
   { 
     path: 'catalogo/cat-areas', 
     component: CatAreasComponent 
@@ -50,29 +51,34 @@ export const routes: Routes = [
     path: 'catalogo/cat-motivos', 
     component: CatMotivosComponent 
   },
-{ 
-  path: 'catalogo/cat-periodos',
-  component: CatPeriodosComponent 
-},
-{ 
-	path: 'catalogo/cat-nacionalidades', 
-	component: CatNacionalidadesComponent 
-},
-{ 
-	path: 'catalogo/cat-roles', 
-	component: CatRolesComponent 
-},
-{
-	path: 'catalogo/cat-regiones',
-	component: CatRegionesComponent
-},
-{
-	path: 'catalogo/cat-entidades',
-	component: CatEntidadesComponent
-},
+  { 
+    path: 'catalogo/cat-periodos',
+    component: CatPeriodosComponent 
+  },
+  { 
+    path: 'catalogo/cat-nacionalidades', 
+    component: CatNacionalidadesComponent 
+  },
+  { 
+    path: 'catalogo/cat-roles', 
+    component: CatRolesComponent 
+  },
+  {
+    path: 'catalogo/cat-regiones',
+    component: CatRegionesComponent
+  },
+  {
+    path: 'catalogo/cat-entidades',
+    component: CatEntidadesComponent
+  },
   { 
     path: 'catalogo/cat-nivelestudios',  
     component: CatNivelEstudiosComponent 
-  }
+  },
 
+
+  { 
+    path: 'gestion-academica/ga-academicos',  
+    component: GaAcademicosComponent 
+  }
 ];

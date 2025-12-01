@@ -44,7 +44,7 @@ interface SUPACatRoles {
 })
 export class CatRolesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private backendUrl = 'http://148.226.168.138/supa/api/SUPACatRoles';
+  private backendUrl = 'http://148.226.168.138/SUPA/api/SUPACatRoles';
 
   // Data properties
   roles: SUPACatRoles[] = [];

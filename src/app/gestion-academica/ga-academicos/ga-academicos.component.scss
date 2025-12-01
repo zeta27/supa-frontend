@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:host {
+  display: block;
+  height: auto;
+  min-height: auto;
+  font-family: 'Roboto', sans-serif !important;
+  
+  .mat-icon {
+    font-family: 'Material Icons', sans-serif !important;
+  }
+
+  // =====================================
+  // LAYOUT PRINCIPAL 
+  // =====================================
+  .iframe-content {
+    background-color: var(--Gray_50);
+    min-height: 500px;
+    padding: 0;
+  }
+
+  // =====================================
+  // BARRA DE HERRAMIENTAS
+  // =====================================
+  .d-flex.justify-content-between {
+    background-color: var(--White);
+    padding: 20px 24px;
+    border-bottom: 2px solid var(--Blue_Gray_100);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0 !important;
+    
+    .form-section {
+      display: flex !important;
+      align-items: flex-end !important;
+      gap: 12px;
+      flex-wrap: wrap;
+      
+      .small-field {
+        min-width: 120px;
+        max-width: 150px;
+      }
+      
+      .nombre-field {
+        min-width: 150px;
+        max-width: 200px;
+      }
+      
+      .email-field {
+        min-width: 200px;
+        max-width: 250px;
+      }
+
+      .select-field {
+        min-width: 180px;
+        max-width: 220px;
+      }
+      
+      .mat-mdc-form-field-infix {
+        min-height: 40px;
+      }
+      
+      input {
+        font-family: 'Roboto', sans-serif !important;
+        font-size: 0.875rem !important;
+        cursor: text;
+      }
+      
+      .add-button {
+        cursor: pointer !important;
+      }
+    }
+    
+    .search-container {
+      max-width: 380px !important;
+      
+      .search-field {
+        width: 100% !important;
+        
+        input {
+          font-family: 'Roboto', sans-serif !important;
+          font-size: 0.875rem !important;
+          cursor: text;
+        }
+      }
+    }
+  }
+
+  // =====================================
+  // TABLA
+  // =====================================
+  .iframe-table-container {
+    background: var(--White);
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+    .table-wrapper {
+      overflow-x: auto;
+      padding: 0;
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        
+        th {
+          background-color: var(--Blue_Gray_50) !important;
+          color: var(--Gray_700) !important;
+          font-weight: 600 !important;
+          font-size: 0.875rem !important;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          padding: 16px 24px !important;
+          border-bottom: 2px solid var(--Blue_Gray_100) !important;
+          white-space: nowrap;
+          text-align: left;
+        }
+        
+        td {
+          padding: 12px 24px !important;
+          font-size: 0.9rem !important;
+          color: var(--Gray_850) !important;
+          border-bottom: 1px solid var(--Gray_300) !important;
+          vertical-align: middle !important;
+        }
+        
+        tr.mat-row {
+          &:hover {
+            background-color: var(--Blue_Gray_50) !important;
+          }
+          
+          &.editing-row {
+            background-color: var(--Cyan_150) !important;
+          }
+        }
+      }
+    }
+  }
+
+  // =====================================
+  // INLINE EDIT
+  // =====================================
+  .inline-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &.multiple {
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    
+    .inline-edit-field {
+      flex: 1;
+      min-width: 100px;
+      
+      &.small {
+        max-width: 120px;
+      }
+      
+      ::ng-deep .mat-mdc-form-field-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      ::ng-deep .mat-mdc-form-field-infix {
+        padding: 8px 12px !important;
+        border: none !important;
+        min-height: 32px !important;
+      }
+      
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+      }
+      
+      ::ng-deep .mat-mdc-outlined-text-field-wrapper {
+        padding: 0 !important;
+      }
+      
+      ::ng-deep .mat-mdc-text-field-wrapper {
+        padding: 0 !important;
+      }
+    }
+    
+    .inline-edit-select {
+      min-width: 150px;
+      
+      ::ng-deep .mat-mdc-form-field-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      ::ng-deep .mat-mdc-form-field-infix {
+        padding: 8px 12px !important;
+        min-height: 32px !important;
+      }
+      
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+      }
+    }
+  }
+
+  // =====================================
+  // BADGES Y BOTONES
+  // =====================================
+  .status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    &.active {
+      background-color: var(--Green_600);
+      color: var(--White);
+    }
+    
+    &.inactive {
+      background-color: var(--Gray_400);
+      color: var(--White);
+    }
+  }
+
+  .button-group {
+    display: flex;
+    gap: 4px;
+    
+    button {
+      cursor: pointer !important;
+    }
+  }
+
+  // =====================================
+  // ESTADOS DE CARGA
+  // =====================================
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    background: var(--White);
+    
+    p {
+      margin-top: 16px;
+      color: var(--Gray_600);
+      font-size: 0.9rem;
+    }
+  }
+
+  // =====================================
+  // NO DATA
+  // =====================================
+  .no-data {
+    padding: 48px !important;
+    text-align: center;
+    background: var(--White) !important;
+    
+    .no-data-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        color: var(--Gray_400);
+      }
+      
+      p {
+        margin: 0;
+        color: var(--Gray_600);
+        font-size: 1rem;
+      }
+    }
+  }
+
+  // =====================================
+  // ESTILOS MATERIAL OVERRIDE
+  // =====================================
+  ::ng-deep {
+    .mat-mdc-form-field {
+      font-family: 'Roboto', sans-serif !important;
+      
+      .mat-mdc-form-field-flex {
+        background-color: var(--White);
+        border: 1px solid var(--Gray_300);
+        border-radius: 4px;
+        
+        &:hover {
+          border-color: var(--Blue_800);
+        }
+      }
+      
+      &.mat-focused {
+        .mat-mdc-form-field-flex {
+          border-color: var(--Blue_800);
+        }
+      }
+    }
+    
+    .mat-mdc-icon-button {
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+    
+    .mat-mdc-button {
+      font-family: 'Roboto', sans-serif !important;
+      letter-spacing: 0.25px;
+    }
+    
+    .mat-mdc-snack-bar-container {
+      &.snackBar-dialog {
+        .mdc-snackbar__surface {
+          background-color: var(--Green_600) !important;
+        }
+      }
+      
+      &.snackBar-dialog-Error {
+        .mdc-snackbar__surface {
+          background-color: var(--Deep_Orange_900) !important;
+        }
+      }
+      
+      &.snackBar-dialog-Warning {
+        .mdc-snackbar__surface {
+          background-color: var(--Amber_500) !important;
+          color: var(--Black) !important;
+        }
+      }
+    }
+  }
+}
